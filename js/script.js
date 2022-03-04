@@ -1,4 +1,23 @@
-class MyTask {
+class Task {
+    constructor(ab, id, mang, tech, natur, proc_type, percent, descrp, children) {
+        this.ab = ab;
+        this.id = id;
+        this.name = id;
+        this.mang = mang;
+        this.tech = tech;
+        this.descrp = descrp;
+        this.natur = natur;
+        this.proc_type = proc_type;
+        this.percent = percent;
+        this.children = children;
+    }
+}
+
+
+
+
+
+class Task_List {
     constructor(id) {
         this.id = id;
         this.proj_d = [];
@@ -15,6 +34,168 @@ class Itemx {
     }
 }
 
+
+// var Tasks = [
+//     new Task(0, 1, "",)
+
+// ];
+var techs = [
+    new Itemx(1, "توريد"),
+    new Itemx(2, "تحليل نصوص"),
+    new Itemx(3, "رسم مخطط"),
+    new Itemx(4, "قراءة مخططات"),
+    new Itemx(5, "فنيات تنفيذ"),
+    new Itemx(6, "استلام"),
+    new Itemx(7, "تسليم"),
+    new Itemx(8, "متابعة"),
+    new Itemx(9, "تقييم"),
+    new Itemx(10, "توقيع"),
+    new Itemx(11, "تنفيذ"),
+    new Itemx(12, "تخطيط"),
+    new Itemx(13, "تحليل أعمال"),
+    new Itemx(14, "عملية الشراء"),
+];
+var admins = [
+    new Itemx(1, "تقديم خطاب بوضع الشركة وقبولها للمنافسة"),
+    new Itemx(2, "تجهيز شروط الدخول للمنافسة"),
+    new Itemx(3, "معرفة ثمن الوثيقة"),
+    new Itemx(4, "مناقشة الجهة في طبيعة العمل"),
+    new Itemx(5, "مراجعة اسم المشروع وتخصصه"),
+    new Itemx(6, "تحديد المشروع"),
+    new Itemx(7, "شراء منافسة"),
+    new Itemx(8, "إعتماد مهندس"),
+    new Itemx(9, "شهادة الجامعة"),
+    new Itemx(10, "الخبرات"),
+    new Itemx(11, "الإقامة"),
+    new Itemx(12, "خطاب"),
+    new Itemx(13, "عقد العمل"),
+    new Itemx(14, "تحديد الوزارة"),
+    new Itemx(15, "تسعير منافسة"),
+    new Itemx(16, "استقدام عمال"),
+    new Itemx(17, "إدارة المشروع"),
+    new Itemx(18, "إعتماد جهاز"),
+    new Itemx(19, "حصر"),
+    new Itemx(20, "مقابلة العملاء"),
+    new Itemx(21, "تشجيع عمال"),
+    new Itemx(22, "تطوير الذات"),
+    new Itemx(23, "تطوير الفنيي"),
+];
+
+
+var Eng = new Task(0, 8, 2, 6, 6, 1, 50, "تجهيز اوراق اعتماد المهندس",
+    //أبناء اعتماد المهندس
+    [
+        new Task(8, 9, 2, 6, 6, 1, 25, "تجهيز الشهادة الجامعة", []),
+        new Task(8, 10, 2, 6, 6, 2, 0, "تجهيز شهادات الخبرة", []),
+        new Task(8, 11, 2, 6, 6, 1, 25, "", []),
+        new Task(8, 12, 2, 6, 6, 2, 0, "", []),
+        new Task(8, 13, 2, 6, 6, 3, 0, "", [])
+    ]
+);
+
+var buy =
+    new Task(0, 7, 2, 6, 6, 1, 10, "إجراءات شراء المنافسة",
+        //أبناء شراء المنافسة 
+        [
+            new Task(7, 14, 3, 5, 1, 1, 0, "", []),
+            new Task(7, 15, 3, 5, 1, 2, 0, "", []),
+            new Task(7, 16, 3, 5, 1, 3, 0, "", []),
+            new Task(7, 17, 3, 5, 1, 2, 0, "", []),
+            new Task(7, 18, 3, 5, 1, 1, 0, "", []),
+            new Task(7, 19, 3, 5, 1, 2, 0, "", []),
+            new Task(7, 20, 3, 5, 1, 3, 0, "", []),
+            new Task(7, 21, 3, 5, 1, 2, 0, "", []),
+            new Task(7, 22, 3, 5, 1, 1, 0, "", []),
+            new Task(7, 23, 3, 5, 1, 2, 0, "", [])
+        ])
+    ;
+var other = [
+    new Task(0, 1, 3, 11, 5, 1, 0, "تقديم خطاب بوضع الشركة وقبولها للمنافسة", []),
+    new Task(0, 2, 6, 12, 5, 2, 0, "تجهيز شروط الدخول للمنافسة", []),
+    new Task(0, 3, 5, 9, 5, 3, 0, "التأكد من ثمن الوثيقة", []),
+    new Task(0, 4, 6, 10, 5, 2, 0, "مناقشة الجهة في طبيعة العمل", []),
+    new Task(0, 5, 7, 1, 5, 1, 0, "مراجعة اسم المشروع وتخصصه", []),
+    new Task(0, 6, 8, 2, 5, 3, 0, " ", [])
+];
+
+ 
+
+other.push(buy);
+other.push(Eng);
+
+var mangs = [
+    new Itemx(1, "الإدارة العامة "),
+    new Itemx(2, "الإدارة الهندسية "),
+    new Itemx(3, "المشتريات "),
+    new Itemx(4, "التنفيذ "),
+    new Itemx(5, "التطوير "),
+    new Itemx(6, "إدارة التخطيط")
+
+];
+
+var naturs = [
+    new Itemx(1, "إداري"),
+    new Itemx(2, "فني"),
+    new Itemx(3, "الجودة"),
+    new Itemx(4, "التسليم والإستلام"),
+    new Itemx(5, "الإشراف"),
+    new Itemx(6, "التصميم والتحليل"),
+    new Itemx(7, "دراسة المنافسات")
+];
+var proc_types = [
+    new Itemx(1, "شرط"),
+    new Itemx(2, "مرحلة"),
+    new Itemx(3, "مهمة")
+];
+
+
+
+
+function GetName(id) {
+    var result = "---";
+    try {
+        var name = admins.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
+
+function GetMang(id) {
+    var result = "---";
+    try {
+        var name = mangs.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
+
+function GetTech(id) {
+    var result = "---";
+    try {
+        var name = techs.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
+
+function GetNatur(id) {
+    var result = "---";
+    try {
+        var name = naturs.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
+
+
+function GetProc_Type(id) {
+    var result = "---";
+    try {
+        var name = proc_types.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
 
 
 var table_User = "myuser";
@@ -39,6 +220,106 @@ var myuser = [
     new Itemx(3, "عبدالرحمن المهندس"),
     new Itemx(4, "كمال صالح"),
 ];
+
+
+
+
+//-------------------------------------------------------------------------------------------------
+var lastrow;
+
+function GetChkBox(data) {
+    //console.log("data=", data);
+    // console.log("row=", row);
+    lastrow = data;
+    return `<input class="groupB" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out()">`;
+}
+var dataTable;
+var tree;
+$(function () {
+    dataTable = $('#MyTable').DataTable({
+        /**
+         l - Length changing 
+         f - Filtering input 
+         t - The Table
+         i - Information 
+         p - Pagination 
+         r - pRocessing 
+         **/
+        "dom": "tr",
+        "ordering": false,
+        "data": other,
+        //"processing": true,
+        //"serverSide": true,
+        // "ajax": {
+        //     "url": "json/data.json",
+        //     // "async": false
+        // },
+        "columns": [
+            { "data": function (data, type, row) { return GetChkBox(data); } },
+            {
+                className: 'treegrid-control',
+                data: function (item) {
+                    if (item.children != null && item.children.length > 0) {
+                        return '<img src="/img/plus.png">';
+                    }
+                    return '';
+                }
+            },
+            { "data": "ab" },
+            { "data": "id", className: "myId" },
+            { "data": "name", render: function (data, type, row) { return GetName(data); } },
+            { "data": "mang", render: function (data, type, row) { return GetMang(data); } },
+            { "data": "tech", render: function (data, type, row) { return GetTech(data); } },
+            { "data": "descrp" },
+            { "data": "natur", render: function (data, type, row) { return GetNatur(data); } },
+            { "data": "proc_type", render: function (data, type, row) { return GetProc_Type(data); } },
+            { "data": "percent" },
+            {
+                "data": function () {
+                    return `<input type="hidden" class="site" />
+                        <input type = "hidden" class= "myuser" />
+                        <input type="hidden" class="proj_d" />
+                        <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d(this)">البنود</button>
+                        <button class="btn btn-info cmdSite" onclick="cmdSite(this)">المواقع</button>
+                        <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser(this)">الاشخاص</button>`;
+                }
+            }
+
+        ],
+        "columnDefs": [
+            {
+                "defaultContent": "",
+                "targets": "_all"
+            }
+        ]
+    });
+
+    // <input class="groupB" type="checkbox" data-row_id="1" onclick="setCheckAll_out()"></input>
+    // collapseAll();
+    tree = new $.fn.dataTable.TreeGrid(dataTable, {
+        left: 15,
+        expandAll: true,
+        expandIcon: '<img src="/img/plus.png">',
+        collapseIcon: '<img src="/img/minus.png">'
+    });
+    //tree.expandAll();
+});
+
+
+
+
+function expandAll() {
+    tree.expandAll();
+}
+
+function collapseAll() {
+    tree.collapseAll();
+}
+
+
+//-------------------------------------------------------------------------------------------------
+
+
 
 var oper_type = "";
 var oper_all = "all";
@@ -74,7 +355,7 @@ function chkAllData() {
 
         var index1 = myData.findIndex(w => w.id == ww);
         if (index1 == -1) {
-            var current = new MyTask(ww);
+            var current = new Task_List(ww);
             myData.push(current);
             index1 = myData.findIndex(w => w.id == ww);
 
@@ -117,7 +398,7 @@ function chkData(myId, table) {
         }
     });
     if (!current) {
-        current = new MyTask(myId);
+        current = new Task_List(myId);
         myData.push(current);
     }
     for (const [key, w] of Object.entries(myData)) {
