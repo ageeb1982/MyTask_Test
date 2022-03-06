@@ -97,11 +97,11 @@ var buy =
     new Task(0, 7, 2, 6, 6, 1, 10, "إجراءات شراء المنافسة",
         //أبناء شراء المنافسة 
         [
-            new Task(7, 14, 3, 5, 1, 1, 0, "", []),
+            new Task(7, 14, 3, 5, 1, 1, 50, "", []),
             new Task(7, 15, 3, 5, 1, 2, 0, "", []),
-            new Task(7, 16, 3, 5, 1, 3, 0, "", []),
+            new Task(7, 16, 3, 5, 1, 3, 100, "", []),
             new Task(7, 17, 3, 5, 1, 2, 0, "", []),
-            new Task(7, 18, 3, 5, 1, 1, 0, "", []),
+            new Task(7, 18, 3, 5, 1, 1, 100, "", []),
             new Task(7, 19, 3, 5, 1, 2, 0, "", []),
             new Task(7, 20, 3, 5, 1, 3, 0, "", []),
             new Task(7, 21, 3, 5, 1, 2, 0, "", []),
@@ -110,15 +110,15 @@ var buy =
         ])
     ;
 var other = [
-    new Task(0, 1, 3, 11, 5, 1, 0, "تقديم خطاب بوضع الشركة وقبولها للمنافسة", []),
-    new Task(0, 2, 6, 12, 5, 2, 0, "تجهيز شروط الدخول للمنافسة", []),
-    new Task(0, 3, 5, 9, 5, 3, 0, "التأكد من ثمن الوثيقة", []),
-    new Task(0, 4, 6, 10, 5, 2, 0, "مناقشة الجهة في طبيعة العمل", []),
+    new Task(0, 1, 3, 11, 5, 1, 100, "تقديم خطاب بوضع الشركة وقبولها للمنافسة", []),
+    new Task(0, 2, 6, 12, 5, 2, 50, "تجهيز شروط الدخول للمنافسة", []),
+    new Task(0, 3, 5, 9, 5, 3, 100, "التأكد من ثمن الوثيقة", []),
+    new Task(0, 4, 6, 10, 5, 2, 30, "مناقشة الجهة في طبيعة العمل", []),
     new Task(0, 5, 7, 1, 5, 1, 0, "مراجعة اسم المشروع وتخصصه", []),
-    new Task(0, 6, 8, 2, 5, 3, 0, " ", [])
+    new Task(0, 6, 8, 2, 5, 3, 50, " ", [])
 ];
 
- 
+
 
 other.push(buy);
 other.push(Eng);
@@ -222,88 +222,16 @@ var myuser = [
 ];
 
 
-
-
-//-------------------------------------------------------------------------------------------------
-var lastrow;
-
-function GetChkBox(data) {
-    //console.log("data=", data);
-    // console.log("row=", row);
-    lastrow = data;
-    return `<input class="groupB" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out()">`;
-}
-var dataTable;
-var tree;
-$(function () {
-    dataTable = $('#MyTable').DataTable({
-        /**
-         l - Length changing 
-         f - Filtering input 
-         t - The Table
-         i - Information 
-         p - Pagination 
-         r - pRocessing 
-         **/
-        "dom": "tr",
-        "ordering": false,
-        "data": other,
-        //"processing": true,
-        //"serverSide": true,
-        // "ajax": {
-        //     "url": "json/data.json",
-        //     // "async": false
-        // },
-        "columns": [
-            { "data": function (data, type, row) { return GetChkBox(data); } },
-            {
-                className: 'treegrid-control',
-                data: function (item) {
-                    if (item.children != null && item.children.length > 0) {
-                        return '<img src="/img/plus.png">';
-                    }
-                    return '';
-                }
-            },
-            { "data": "ab" },
-            { "data": "id", className: "myId" },
-            { "data": "name", render: function (data, type, row) { return GetName(data); } },
-            { "data": "mang", render: function (data, type, row) { return GetMang(data); } },
-            { "data": "tech", render: function (data, type, row) { return GetTech(data); } },
-            { "data": "descrp" },
-            { "data": "natur", render: function (data, type, row) { return GetNatur(data); } },
-            { "data": "proc_type", render: function (data, type, row) { return GetProc_Type(data); } },
-            { "data": "percent" },
-            {
-                "data": function () {
-                    return `<input type="hidden" class="site" />
-                        <input type = "hidden" class= "myuser" />
-                        <input type="hidden" class="proj_d" />
-                        <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d(this)">البنود</button>
-                        <button class="btn btn-info cmdSite" onclick="cmdSite(this)">المواقع</button>
-                        <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser(this)">الاشخاص</button>`;
-                }
-            }
-
-        ],
-        "columnDefs": [
-            {
-                "defaultContent": "",
-                "targets": "_all"
-            }
-        ]
-    });
-
-    // <input class="groupB" type="checkbox" data-row_id="1" onclick="setCheckAll_out()"></input>
-    // collapseAll();
-    tree = new $.fn.dataTable.TreeGrid(dataTable, {
-        left: 15,
-        expandAll: true,
-        expandIcon: '<img src="/img/plus.png">',
-        collapseIcon: '<img src="/img/minus.png">'
-    });
-    //tree.expandAll();
-});
+var tablex = [
+    new Itemx(1, "الحصورات"),
+    new Itemx(2, "المستخلصات"),
+    new Itemx(3, "المخاطبات_والإجتماعات"),
+    new Itemx(4, "أوامر_التغيير"),
+    new Itemx(5, "خطابات_التوجيه"),
+    new Itemx(6, "الحصر"),
+    new Itemx(7, "الغرامات"),
+    new Itemx(8, "الضمانات"),
+];
 
 
 
@@ -505,9 +433,84 @@ function cmdMyUser(oe) {
     }
     );
 
+
     showModel(table_User, myId, entry);
 }
 
+
+function cmdTable_All(oe) {
+    showModel_Table();
+}
+function cmdTable(oe) {
+    showModel_Table();
+}
+function showModel_Table() {
+
+
+
+    var Table_Body = document.getElementById("Table_Body");
+    var tr = "";
+    for (const [key, w] of Object.entries(tablex)) {
+        var chk = "unchecked";
+        tr += ` <tr>
+                    <td><input class="groupC" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+                    <td>
+                        ${w.name}
+                    </td>
+                     <td>
+                    <!--   <button>عرض المواقع</button>
+                      <button>عرض الأشخاص</button>-->
+                    </td>
+                    <td></td>
+                </tr>`;
+    }
+
+    Table_Body.innerHTML = tr;
+    var Table_Location_Body = document.getElementById("Table_Location_Body");
+    var tr2 = "";
+    for (const [key, w] of Object.entries(sites)) {
+        var chk = "unchecked";
+        tr2 += ` <tr>
+                    <td><input class="groupD" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+                    <td>
+                        ${w.name}
+                    </td>
+                     <td>
+                        <!-- <button>عرض المواقع</button> -->
+                    </td>
+                </tr>`;
+    }
+
+    Table_Location_Body.innerHTML = tr2;
+
+    var Table_User_Body = document.getElementById("Table_User_Body");
+    var tr3 = "";
+    for (const [key, w] of Object.entries(myuser)) {
+        var chk = "unchecked";
+        tr3 += ` <tr>
+                    <td><input class="groupE" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+                    <td>
+                        ${w.name}
+                    </td>
+                     <td>
+                        <!-- <button>عرض الأشخاص</button> -->
+                    </td>
+                </tr>`;
+    }
+
+    Table_User_Body.innerHTML = tr3;
+
+
+    //setCheckAll();
+    //setCheckAll_out();
+    var MyModal = new bootstrap.Modal(document.querySelector("#MyTableAction"));
+    MyModal.show();
+
+
+
+
+
+}
 
 function showModel_All(table, entry) {
 
@@ -728,6 +731,31 @@ function checkAll(inp) {
 }
 function checkAll_out(inp) {
     document.querySelectorAll('.groupB').forEach(el => {
+        el.checked = inp.checked;
+        //  checkChange(el);
+    }
+    );
+
+}
+
+function checkAll_Table(inp) {
+    document.querySelectorAll('.groupC').forEach(el => {
+        el.checked = inp.checked;
+        //  checkChange(el);
+    }
+    );
+
+}
+function checkAll_Table_Location(inp) {
+    document.querySelectorAll('.groupD').forEach(el => {
+        el.checked = inp.checked;
+        //  checkChange(el);
+    }
+    );
+
+}
+function checkAll_Table_User(inp) {
+    document.querySelectorAll('.groupE').forEach(el => {
         el.checked = inp.checked;
         //  checkChange(el);
     }

@@ -95,7 +95,7 @@
                 }
                 // record selected indexes
                 var selectedIndexes = [];
-                select && (selectedIndexes = dataTable.rows({selected: true}).indexes().toArray());
+                select && (selectedIndexes = dataTable.rows({ selected: true }).indexes().toArray());
                 var rows = dataTable.rows();
                 var parentTr = getParentTr(e.target);
                 var parentTrId = getTrId();
@@ -119,6 +119,11 @@
                         var newRow = dataTable.row.add(item);
                         var node = newRow.node();
                         var treegridTd = $(node).find('.treegrid-control');
+                        try {
+                            //تغيير لون خلفية الإبن
+                            var forChilds = node.querySelectorAll('.forChild')
+                                .forEach(w => { w.classList.add("myChild"); });
+                        } catch { }
                         var left = (layer + 1) * sLeft;
                         $(node).attr('parent-index', index);
                         treegridTd.find('span').css('marginLeft', left + 'px');
@@ -137,7 +142,7 @@
             // Collapse TreeGrid
             dataTable.on('click', 'td.treegrid-control-open', function (e) {
                 var selectedIndexes = [];
-                select && (selectedIndexes = dataTable.rows({selected: true}).indexes().toArray());
+                select && (selectedIndexes = dataTable.rows({ selected: true }).indexes().toArray());
 
                 var parentTr = getParentTr(e.target);
                 var parentTrId = $(parentTr).attr('id');
@@ -159,15 +164,15 @@
             dataTable.on('init.dt', function () {
                 console.log('Table initialisation complete: ' + new Date().getTime());
                 //dataTable 初始化完成调用展开
-                if(sExpandAll){
-                    that.expandAll.call(that)
+                if (sExpandAll) {
+                    that.expandAll.call(that);
                 }
             });
 
             //dataTable draw 处理
             dataTable.on('draw.dt.DTFC', function () {
                 that._fnDraw.call(that);
-            })
+            });
 
             var inProgress = false;
             // Check parents and children on select
@@ -219,14 +224,14 @@
             });
         },
 
-        "collapseAll":function(){
+        "collapseAll": function () {
             console.log('collapseAll: ' + new Date().getTime());
             var that = this;
             this.s = $.extend(true, this.s, TreeGrid.defaults, globalInit);
             var dataTable = $(this.s.dt.nTable).dataTable().api();
             var trs = $(dataTable.table().body()).find('tr');
             trs.each(function (index, tr) {
-                if(typeof($(tr).attr("parent-index"))=="undefined"){
+                if (typeof ($(tr).attr("parent-index")) == "undefined") {
                     var trid = $(tr).attr('id');
                     resetTreeGridRows(trid);
                 }
@@ -256,7 +261,7 @@
      * 收缩展开处理
      * @param trId
      */
-    function resetTreeGridRows (trId) {
+    function resetTreeGridRows(trId) {
         var subRows = treeGridRows[trId];
         if (subRows && subRows.length) {
             subRows.forEach(function (node) {
@@ -289,9 +294,9 @@
             parentIndex = +parentIndex;
             var selector = '[parent-index="' + parentIndex + '"]';
             var allChildRows = dataTable.rows(selector).nodes();
-            var selectedChildRows = dataTable.rows(selector, {selected: true}).nodes();
+            var selectedChildRows = dataTable.rows(selector, { selected: true }).nodes();
             if (allChildRows.length === selectedChildRows.length) {
-                var parentRow = dataTable.row(parentIndex, {selected: false});
+                var parentRow = dataTable.row(parentIndex, { selected: false });
                 parentRow.select();
                 if (parentRow.node()) {
                     selectParent(dataTable, parentIndex);
@@ -301,7 +306,7 @@
     }
 
     function selectChildren(dataTable, index) {
-        var rows = dataTable.rows('[parent-index="' + index + '"]', {selected: false});
+        var rows = dataTable.rows('[parent-index="' + index + '"]', { selected: false });
         var childIndexes = rows.indexes().toArray();
         if (childIndexes.length) {
             rows.select();
@@ -316,7 +321,7 @@
         var parentIndex = $(row.node()).attr('parent-index');
         if (parentIndex !== null) {
             parentIndex = +parentIndex;
-            var parentRow = dataTable.row(parentIndex, {selected: true});
+            var parentRow = dataTable.row(parentIndex, { selected: true });
             parentRow.deselect();
             if (parentRow.node()) {
                 deselectParent(dataTable, parentIndex);
@@ -325,7 +330,7 @@
     }
 
     function deselectChildren(dataTable, index) {
-        var rows = dataTable.rows('[parent-index="' + index + '"]', {selected: true});
+        var rows = dataTable.rows('[parent-index="' + index + '"]', { selected: true });
         var childIndexes = rows.indexes().toArray();
         if (childIndexes.length) {
             rows.deselect();
@@ -345,7 +350,7 @@
         var expandIcon = $(treeGrid.s.expandIcon);
         var collapseIcon = $(treeGrid.s.collapseIcon);
         if (!tds) {
-            return
+            return;
         }
         // 迭代存在子集的表格行
         var parentTr = getParentTr(tds);
