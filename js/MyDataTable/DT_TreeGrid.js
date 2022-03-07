@@ -13,6 +13,24 @@
  * 3、更新后更容易对插件进行扩展，可以自定义自己需要实现的功能，参考expandAll() / collapseAll()
  * 自己定义自己的方法，处理不同的需求
  */
+let myColors = ["#69f488", "#be4af6", "#f7fca0", "#84d4f7", "#fdd1a9", "#ef55ba", "#7df8cc", "#d184fb", "#f48ba1", "#8192f6", "#7afada", "#fada8d", "#d184fb", "#d8fc98"];
+
+function getRND_Color() {
+    var color = myColors[Math.floor(Math.random() * myColors.length)];
+    return color;
+}
+var cColor;
+function getColor() {
+    if (cColor == undefined) { cColor = 0; }
+    if (cColor >= myColors.length) { cColor = 0; }
+
+    var color = myColors[cColor];
+    cColor = cColor + 1;
+    return color;
+
+}
+
+var current_td;
 (function (factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD
@@ -103,8 +121,11 @@
                 var row = dataTable.row(parentTr);
                 var index = row.index();
                 var data = row.data();
+                var tds = dataTable.cell(getParentTd(e.target)).node();
 
                 var td = $(dataTable.cell(getParentTd(e.target)).node());
+
+
                 var paddingLeft = parseInt(td.css('padding-left'), 10);
                 var layer = parseInt(td.find('span').css('margin-left') || 0, 10) / sLeft;
                 var icon = collapseIcon.clone();
@@ -112,18 +133,50 @@
                 td.removeClass('treegrid-control').addClass('treegrid-control-open');
                 td.html('').append(icon);
 
+
                 if (data.children && data.children.length) {
                     var subRows = treeGridRows[parentTrId] = [];
+
                     var prevRow = row.node();
+                    // var SubChild = row.find(".subChild");                    // console.log("row", row);
+
+
+
+                    var myColor = getColor();
                     data.children.forEach(function (item) {
+                        parentTr.classList.remove('odd');
+                        parentTr.classList.remove('even');
+                        parentTr.style.background = myColor;
+                        //console.log(parentTr);
                         var newRow = dataTable.row.add(item);
                         var node = newRow.node();
                         var treegridTd = $(node).find('.treegrid-control');
                         try {
                             //تغيير لون خلفية الإبن
-                            var forChilds = node.querySelectorAll('.forChild')
-                                .forEach(w => { w.classList.add("myChild"); });
-                        } catch { }
+
+                            node.querySelectorAll('.forChild')
+                                .forEach(w => {
+
+
+
+
+                                    //var P_td = row.find(".subChild");
+                                    //if (P_td) { P_td.style.background = myColor; }
+
+                                    // var classL = Object.entries(tds.classList).map(([k, v]) => v);
+                                    // console.log(classL);
+
+                                    // var Is0 = classL.includes("myChild");
+                                    // var Is1 = classL.includes("myChild1");
+
+                                    // if (Is0) { w.classList.remove("myChild"); w.classList.add("myChild1"); }
+                                    // else
+                                    //     if (Is1) { w.classList.remove("myChild1"); w.classList.add("myChild"); }
+                                    //     else { w.classList.add("myChild"); }
+                                    w.style.background = myColor;
+
+                                });
+                        } catch (ee) { console.log(ee); }
                         var left = (layer + 1) * sLeft;
                         $(node).attr('parent-index', index);
                         treegridTd.find('span').css('marginLeft', left + 'px');
@@ -149,6 +202,8 @@
                 var td = $(dataTable.cell(getParentTd(e.target)).node());
                 var layer = parseInt(td.find('span').css('margin-left') || 0, 10) / sLeft;
                 var icon = expandIcon.clone();
+                parentTr.style.backgroundColor = "";
+                //style.backgroundColor = "transparent"
                 icon.css('marginLeft', layer * sLeft + 'px');
                 td.removeClass('treegrid-control-open').addClass('treegrid-control');
                 td.html('').append(icon);

@@ -1,3 +1,34 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //#region  Models
 
 //#region  Itemx Class
@@ -21,34 +52,18 @@ class Task_List {
     }
 }
 
-class One_Task {
-    constructor(id, site, myuser, proj_d) {
-        this.id = id;
-        this.site = site;
-        this.myuser = myuser;
-        this.proj_d = proj_d;
-        this.percent = 0;
-        this.descrp = "";
-        this.emp_note = "";
-    }
-}
-
-
 //#endregion
 
 //#region  Task Class
 class Task {
     constructor(ab, id, id_name, mang, tech, natur, proc_type, percent, sn, descrp, children) {
-
-        // "التسلسلي",
-        this.id = id;
-
         //الاب
         this.ab = ab;
-        // الإجراء
-        this.id_name = id_name;
+        // "التسلسلي",
+        this.id = id;
+        //
+        this.id_name = 0;
 
-        // تسلسلي العمل
         this.name = id;
 
         // "الإدارة",
@@ -56,53 +71,48 @@ class Task {
 
         // "مدير الإجراء",
         this.mang_name = 0;
-
         // "الموظفيين الإداريين",
         this.emps_mang = [];
-
-
-        // "المهام الفنية",
         this.tech = tech;
-
-        // "الوصف",
         this.descrp = descrp;
-
-        //طبيعة العمل",
         this.natur = natur;
-
-        //نوع الإجراء",
         this.proc_type = proc_type;
-
-        //النسبة";
         this.percent = percent;
-        this.percent_one = () => { return GetPercent_One(this); };
-        //نسبة الكل";
-        this.percent_all = () => { return GetPercent_All(this); };
-
         this.sn = sn;
-
-        // الأبناء
         this.children = children;
 
+
+
         // "البنود",
-        this.proj_ds = () => { return GetTask_Proj_ds_Ids(this); };
-
+        name: "proj_ds";
         // "المواقع",
-        this.sites = () => { return GetTask_Sites_Ids(this); };
-
+        name: "sites";
         // "مدير الموقع",
-        this.site_mang = 0;
-
+        name: "site_mang";
         // "المسؤولون بالتنفيذ",
-        this.site_emps = [];
-
+        name: "site_emps";
+        // "المهام الفنية",
+        name: "tech";
         // "المدة",
-        this.duration = 0;
-
-        this.strart_date = "";
-        this.end_date = "";
+        name: "duration";
         //البداية والنهاية
-        this.start_end_date = () => { return GetTask_Start_End_Date(this); };
+        name: "start_end_date";
+        // "الوصف",
+        name: "descrp";
+        //طبيعة العمل",
+        name: "natur;;;;;;
+        //نوع الإجراء",
+        name: "proc_type;;;;;;
+
+        //النسبة";
+        name: "percent;;;;;;
+        //نسبة الكل";
+        name: "percent_all;;;;;;
+
+
+
+
+
 
 
     }
@@ -161,12 +171,12 @@ var other = [
     new Task("0", "1", 1, 3, 11, 5, 1, 100, 1, "تقديم خطاب بوضع الشركة وقبولها للمنافسة", []),
     new Task("0", "2", 15, 3, 5, 1, 1, 50, 2, "", []),
     new Task("0", "3", 17, 3, 4, 2, 3, 0, 3, "", [
-        new Task("3", "55.1", 2, 6, 12, 5, 2, 50, 4, "تجهيز شروط الدخول للمنافسة", [
-            new Task("55.1", "55.1.1", 16, 3, 5, 1, 2, 0, 5, "", [
-                new Task("55.1.1", "55.1.1.1", 18, 3, 3, 1, 2, 100, 6, "", []),
-                new Task("55.1.1", "55.1.1.2", 19, 3, 2, 2, 1, 0, 7, "", []),
-                new Task("55.1.1", "55.1.1.3", 20, 3, 2, 1, 2, 100, 8, "", []),
-                new Task("55.1.1", "55.1.1.4", 21, 3, 1, 2, 3, 0, 9, "", []),
+        new Task("3", "3.1", 2, 6, 12, 5, 2, 50, 4, "تجهيز شروط الدخول للمنافسة", [
+            new Task("3.1", "3.1.1", 16, 3, 5, 1, 2, 0, 5, "", [
+                new Task("3.1.1", "3.1.1.1", 18, 3, 3, 1, 2, 100, 6, "", []),
+                new Task("3.1.1", "3.1.1.2", 19, 3, 2, 2, 1, 0, 7, "", []),
+                new Task("3.1.1", "3.1.1.3", 20, 3, 2, 1, 2, 100, 8, "", []),
+                new Task("3.1.1", "3.1.1.4", 21, 3, 1, 2, 3, 0, 9, "", []),
 
             ]),
             new Task("3.1", "3.1.2", 7, 3, 5, 1, 3, 100, 10, "", []),
@@ -293,128 +303,6 @@ var tablex = [
 
 
 //#region DataMethods
-
-
-
-
-
-
-function GetPercent_All(task) {
-    if (!task) return 0;
-    var sum = 0;
-    try {
-        var myTask = new Task(task);
-        var count = myTask.children.length;
-        var Real_Count = 0;
-        if (count == 0) return myTask.percent;
-        var current_Sum = 0;
-        for (var i = 0; i < count; i++) {
-            if (myTask.children[i]) {
-                Real_Count++;
-                var curr_Child = new Task(myTask.children[i]);
-                var result = GetPercent_One(curr_Child);
-
-                var Curr_Count = 1;
-
-                if (curr_Child.children.length != 0) {
-                    Curr_Count++;
-                    result += GetPercent_All(curr_Child);
-                }
-                else {
-                }
-
-                current_Sum += Math.round(result / Curr_Count, 0);
-
-            }
-        }
-        if (Real_Count == 0) return 100;
-        var avarge = current_Sum / Real_Count;
-        sum = Math.round(avarge, 0);
-
-
-    }
-    catch { }
-
-
-
-    return sum;
-}
-
-function GetPercent_One(task) {
-    if (!task) return 0;
-    var sum = 0;
-    try {
-        var curr_Child = new Task(task);
-        if (!curr_Child.emps_mang) curr_Child.emps_mang = [];
-        if (!curr_Child.site_emps) curr_Child.site_emps = [];
-
-        if (curr_Child.emps_mang.length == 0
-            && curr_Child.site_emps.length == 0) {
-            return curr_Child.percent;
-        }
-
-        var Emp_mange = GetPercent_Emps_mang(curr_Child);
-        var Site_emps = GetPercent_site_emps(curr_Child);
-        sum = Math.round((Emp_mange + Site_emps) / 2, 0);
-    }
-    catch { }
-    return sum;
-}
-function GetPercent_Emps_mang(task) {
-    if (!task) return 0;
-    var sum = 0;
-    try {
-        var myTask = new Task(task);
-        var count = myTask.emps_mang.length;
-        var Real_Count = 0;
-        if (count == 0) return 100;
-        var current_Sum = 0;
-        for (var i = 0; i < count; i++) {
-            if (myTask.emps_mang[i]) {
-                var curr_Child = new One_Task(myTask.emps_mang[i]);
-                Real_Count++;
-                current_Sum += curr_Child.percent;
-            }
-        }
-        if (Real_Count == 0) return 100;
-        var avarge = current_Sum / Real_Count;
-        sum = Math.round(avarge, 0);
-
-
-    }
-    catch { }
-
-
-
-    return sum;
-}
-function GetPercent_site_emps(task) {
-    if (!task) return 0;
-    var sum = 0;
-    try {
-        var myTask = new Task(task);
-        var count = myTask.site_emps.length;
-        var Real_Count = 0;
-        if (count == 0) return 100;
-        var current_Sum = 0;
-        for (var i = 0; i < count; i++) {
-            if (myTask.site_emps[i]) {
-                var curr_Child = new One_Task(myTask.site_emps[i]);
-                Real_Count++;
-                current_Sum += curr_Child.percent;
-            }
-        }
-        if (Real_Count == 0) return 100;
-        var avarge = current_Sum / Real_Count;
-        sum = Math.round(avarge, 0);
-    }
-    catch { }
-
-
-
-    return sum;
-}
-
 function GetName(id) {
     var result = "---";
     try {
@@ -1104,8 +992,6 @@ function setCheckAll_out() {
 document.onload = function () {
 
 };
-
-
 function updateSelect(rowId, table, id, isSelect) {
     chkData(rowId, table);
 
@@ -1120,7 +1006,7 @@ function updateSelect(rowId, table, id, isSelect) {
             myData[index1][table][index2]['is_select'] = isSelect;
             return;
         }
-    }
+    };
     // for (const [key, w] of Object.entries(mytable)) {
 
 
@@ -1139,28 +1025,3 @@ function updateSelect(rowId, table, id, isSelect) {
     //     }
     // }
 }
-
-function change_Serial_No(tasks, abId) {
-    try {
-        var myAb = Copy_Object(abId);
-        if (!tasks) return;
-        var count = 0;
-        if (!abId) { abId = ""; }
-        if (abId == undefined) { abId = ""; }
-        if (abId == 0) { abId = ""; }
-        for (const [key, myTask] of Object.entries(tasks)) {
-            if (!myTask) continue;
-            count++;
-            var id = abId + "." + count;
-            if (abId == "") { id = count; }
-            myTask.id = id;
-            if (myTask.children) {
-                if (myTask.children.length > 0) {
-                    change_Serial_No(myTask.children, id);
-                }
-            }
-        }
-    } catch { }
-
-}
-

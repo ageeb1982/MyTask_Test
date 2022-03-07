@@ -1,1 +1,56 @@
-.myChild{background-color: rgb(183, 171, 250) !important;}
+.cutColor {
+    background-color: rgb(107, 106, 110) !important;
+    color: white !important;
+
+}
+
+.myChild {
+    background-color: rgb(217, 212, 243) !important;
+}
+
+
+
+.myChild1 {
+    background-color: rgb(247, 220, 220) !important;
+}
+
+/*اصفر*/
+.colX1 {
+    background-color: rgb(236, 236, 188) !important;
+}
+
+/*أزرق*/
+.colX2 {
+    background-color: rgb(186, 225, 248) !important;
+}
+
+/*احمر*/
+.colX3 {
+    background-color: rgb(245, 192, 192) !important;
+}
+
+/*اخضر*/
+.colX4 {
+    background-color: rgb(186, 240, 188) !important;
+}
+
+small {
+    background-color: #ebebeb;
+    display: block;
+}
+
+.jcontextmenu {
+    background-color: rgb(186, 225, 248) !important;
+    /* display: block !important; */
+    /* font-size: 20px !important; */
+    font-weight: bold !important;
+    color: rgb(13, 13, 129) !important;
+    /* width: 500px;
+     text-align: right !important;
+direction: rtl !important; */
+}
+
+.tableSize {
+    /* max-width: 2239px !important; */
+    max-width: 2235px !important;
+}

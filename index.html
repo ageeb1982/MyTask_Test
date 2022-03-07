@@ -14,9 +14,25 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
+    <script defer src="js/jsuites.js"></script>
+    <link rel="stylesheet" href="css/jsuites.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Material+Icons" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css"
+        type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
+    <script defer src="https://cdn.datatables.net/rowreorder/1.2.8/js/dataTables.rowReorder.min.js"></script>
+    <script defer src="https://cdn.datatables.net/colreorder/1.5.5/js/dataTables.colReorder.min.js"></script>
+    <!--<script defer src="//cdn.jsdelivr.net/jquery.ui-contextmenu/1.7.0/jquery.ui-contextmenu.min.js"></script>-->
+    <!-- <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/4.0.2/css/fixedColumns.dataTables.min.css"> -->
+
 </head>
 
 <body style="padding-top: 100px;" class="container-fluid" dir="rtl">
+
+    <div class="colX1 rClick"></div>
+
+
 
     <h2>نموذج الإجراءات</h2>
 
@@ -27,31 +43,54 @@
         <button class="btn btn-primary" type="button" onclick="collapseAll()">تجميع الكل</button>
     </div>
 
-    <div class="table-responsive">
+    <div style="padding-top: 10px;margin-top: 15px;margin-bottom: 15px; margin-right: auto; margin-left: auto;"
+        class="tableSize table-responsive">
         <table id="MyTable" role="grid"
             class="MyTable table table-striped table-bordered table-separated table-hover display">
-            <thead>
+            <thead class="MyThead">
                 <tr>
-                    <th><input class="checkAll_out" type="checkbox" onclick="checkAll_out(this)"></th>
-                    <th></th>
-                    <th>الأب</th>
-                    <th>تسلسلي</th>
-                    <th>الإجراءات مجموعة الواحد منها يتحول مهمة لشخص</th>
-                    <th>الإدارة</th>
-                    <th>المهام الفنية</th>
-                    <th>وصف العمل</th>
-                    <th>طبيعة العمل</th>
-                    <th>نوع الإجراء</th>
-                    <th>نسبة الإنجاز</th>
-                    <th>
-                        <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d_All(this)">البنود </button>
+                    <th colspan="4" class="text-center colX1">الإجراء</th>
+                    <th colspan="3" class="text-center colX2">القسم الإداري</th>
+                    <th colspan="7" class="text-center colX3">القسم الفني</th>
+                    <th colspan="8" class="text-center colX4">المدد والنسب</th>
+
+                </tr>
+                <tr>
+                    <th class="colX1"><input class="checkAll_out" type="checkbox" onclick="checkAll_out(this)"></th>
+                    <th class="colX1"></th>
+                    <!-- <th>الأب</th> -->
+                    <th class="colX1">تسلسلي</th>
+                    <th class="colX1">الإجراءات</th>
+
+                    <!-- <th>الإجراءات مجموعة الواحد منها يتحول مهمة لشخص</th> -->
+
+
+                    <th class="colX2">الإدارة</th>
+                    <th class="colX2">مدير الإجراء</th>
+                    <th class="colX2">الموظفين الإداريين</th>
+                    <th class="colX3">البنود</th>
+                    <th class="colX3">المواقع</th>
+                    <th class="colX3">مدير الموقع</th>
+                    <th class="colX3">المسؤولون بالتنفيذ</th>
+                    <th class="colX3">المهام الفنية</th>
+                    <th class="colX3">طبيعة العمل</th>
+                    <th class="colX3">وصف العمل</th>
+                    <th class="colX4">المدة</th>
+                    <th class="colX4">البداية/النهاية</th>
+                    <th class="colX4">نوع الإجراء</th>
+                    <th class="colX4">نسبة الإنجاز</th>
+                    <th class="colX4">نسبة للجميع</th>
+                    <th class="colX4 btn-group-vertical">
+
+                        <button class="btn btn-warning cmdProj_ds" onclick="cmdProj_d_All(this)">التعديلات</button>
+                        <!-- <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d_All(this)">البنود </button>
                         <button class="btn btn-success cmdSite" onclick="cmdSite_All(this)">المواقع</button>
-                        <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser_All(this)">الأشخاص</button>
-                        <button class="btn btn-warning cmdTable" onclick="cmdTable_All(this)">الإجراءات</button>
+                        <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser_All(this)">الأشخاص</button> -->
+                        <button class="btn btn-dark cmdTable" onclick="cmdTable_All(this)">ربط بجداول</button>
                     </th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="DT_Body">
             </tbody>
         </table>
     </div>
@@ -217,12 +256,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
-    <script defer src="js/dataTables.treeGrid.js"> </script>
     <script defer src="js/script.js"> </script>
-    <script defer src="js/dataTable_Action.js">
+    <script defer src="js/MyDataTable/DT_TreeGrid.js"> </script>
+    <script defer src="js/MyDataTable/DT_Action.js"> </script>
 
 
-    </script>
 
 
     <script defer>
