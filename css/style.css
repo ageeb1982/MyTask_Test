@@ -54,3 +54,54 @@ direction: rtl !important; */
     /* max-width: 2239px !important; */
     max-width: 2235px !important;
 }
+
+.tmp_Table_Class {
+    max-height: 320px !important;
+    overflow-y: auto;
+    width: 100% !important;
+    /* height: 50vh; */
+}
+
+.table {
+    width: 100% !important;
+    max-height: 320px !important;
+    overflow-y: auto;
+
+}
+
+.dataTables_scrollHeadInner {
+    width: 100% !important;
+}
+
+.dt_tmp_task {
+    overflow: auto;
+
+}
+
+.dt_tmp_user {
+    overflow: auto;
+    /*  margin-top: 50%;*/
+}
+
+.dt_tmp_proj_d {
+    overflow: auto;
+
+}
+
+.dt_tmp_site {
+    overflow: auto;
+
+}
+
+.dt_tmp_up {
+    overflow: auto;
+}
+
+.dt_tmp_down {
+    /* overflow: auto;*/
+    margin-top: 1vh;
+}
+
+.toast {
+    font-size: 1.2rem !important;
+}

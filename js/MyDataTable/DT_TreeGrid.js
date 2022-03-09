@@ -141,7 +141,6 @@ var current_td;
                     // var SubChild = row.find(".subChild");                    // console.log("row", row);
 
 
-
                     var myColor = getColor();
                     data.children.forEach(function (item) {
                         parentTr.classList.remove('odd');
@@ -191,6 +190,8 @@ var current_td;
                         dataTable.rows(selectedIndexes).select();
                     }, 0);
                 }
+                try { tr_Event_Click(); } catch (e) { }
+
             });
             // Collapse TreeGrid
             dataTable.on('click', 'td.treegrid-control-open', function (e) {
@@ -457,6 +458,8 @@ var current_td;
             select && setTimeout(function () {
                 dataTable.rows(selectedIndexes).select();
             }, 0);
+            try { tr_Event_Click(); } catch (e) { }
+
         }
     };
 

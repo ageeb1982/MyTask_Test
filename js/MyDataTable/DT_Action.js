@@ -11,7 +11,6 @@
         r - pRocessing 
 */
 var dataTable;
-var tree;
 var dt_body;
 var rightClickSelect_Item;
 var selectId;
@@ -20,208 +19,17 @@ var CopyId = "";
 var contextMenu;
 $(function () {
 
-    dataTable = $("#MyTable").DataTable({
-
-        dom: "tr",
-        //dom: 'l<"H"Rf>t<"F"ip>',
-        ordering: false,
-        data: other,
-        rowReorder: false,
-        colReorder: false,//تحريك الأعمدة
-        "jQueryUI": true,
-        //------------------------------------------
-        //تثبيت الأعمدة
-        scrollY: 700,
-        scrollX: true,
-        scrollCollapse: true,
-        paging: false,
-        fixedColumns: true,
 
 
-        //------------------------------------------
+    Reload_dataTable();
 
 
-        //"processing": true,
-        //"serverSide": true,
-        // "ajax": {
-        //     "url": "json/data.json",
-        //     // "async": false
-        // },
-        columns: [
-            {
-                // ازرار الإختيار
-                className: "forChild",
-                data: function (data, type, row) { return GetChkBox(data); },
-            },
-            {
-                // زر الشجرة
-                className: "treegrid-control forChild ",
-                data: function (item) {
-                    if (item.children != null && item.children.length > 0) {
-                        return '<img src="/img/plus.png">';
-                    }
-                    return "";
-                },
-            },
-            // { "data": "ab" },
-            {
-                // الرقم التسلسلي
-                data: "id",
-                className: "myId forChild subChild",
-            },
-            {
-                // الإجراءات
-                data: "id_name",
-                render: function (data, type, row) {
-                    return GetName(data);
-                },
-            },
-            {
-                // الإدارة
-                data: "mang",
-                render: function (data, type, row) {
-                    return GetMang(data);
-                },
-            },
-            {
-                // مدير الإجراء
-                data: "mang_name",
-                render: function (data, type, row) {
-                    return GetUser_Name(data);
-                },
-            },
-            {
-                // الموظفيين الإداريين
-                data: "emps_mang",
-                render: function (data, type, row) {
-                    return GetUsers_Name(data);
-                },
-            },
-            {
-                // البنود
-                data: "proj_ds",
-                render: function (data, type, row) {
-                    return GetProj_ds_Name(data);
-                },
-            },
-            {
-                // المواقع
-                data: "sites",
-                render: function (data, type, row) {
-                    return GetSites_Name(data);
-                },
-            },
-            {
-                // مدير الموقع
-                data: "site_mang",
-                render: function (data, type, row) {
-                    return GetUser_Name(data);
-                },
-            },
-            {
-                // المسؤولون بالتنفيذ
-                data: "site_emps",
-                render: function (data, type, row) {
-                    return GetUsers_Name(data);
-                },
-            },
-
-            {
-                // المهام الفنية
-                data: "tech",
-                render: function (data, type, row) {
-                    return GetTech(data);
-                },
-            },
-            {
-                // المدة
-                data: "duration",
-                render: function (data, type, row) {
-                    return GetDuration(data);
-                },
-            },
-            {
-                //البداية والنهاية
-                data: "start_end_date",
-                render: function (data, type, row) {
-                    return Get_start_end_date(row);
-                },
-            },
-            {
-                data: "descrp",
-            },
-            {
-                data: "natur",
-                render: function (data, type, row) {
-                    return GetNatur(data);
-                },
-            },
-            {
-                data: "proc_type",
-                render: function (data, type, row) {
-                    return GetProc_Type(data);
-                },
-            },
-            {
-                data: "percent_one",
-                render: function (data, type, row) {
-                    return GetPercent_text(data);
-                },
-            },
-            {
-                data: "percent_all",
-                render: function (data, type, row) {
-                    return GetPercent_All_Text(data);
-                },
-            },
-            {
-                data: "sn",
-                render: function (data, type, row) {
-                    return `
-                        <div class="btn-group-vertical">  <button class="btn btn-warning cmdProj_d" onclick="cmdProj_d(this)">تعديلات </button>
-                        <button class="btn btn-dark cmdTable" onclick="cmdTable(this)">ربط بجداول</button></div>`;
-                },
-            },
-        ],
 
 
-        // `<input type="hidden" class="site" />
-        //     <input type = "hidden" class= "myuser" />
-        //     <input type="hidden" class="proj_d" />
-        //     <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d(this)">البنود </button>
-        //     <button class="btn btn-success cmdSite" onclick="cmdSite(this)">المواقع</button>
-        //     <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser(this)">الأشخاص</button>
-        //     <button class="btn btn-warning cmdTable" onclick="cmdTable(this)">الإجراءات</button>`
-
-        columnDefs: [
-            {
-                defaultContent: "",
-                targets: "_all",
-            },
-            // { orderable: true, className: 'reorder', targets: 0 },
-            // { orderable: false, targets: '_all' }
-        ],
-        // rowReorder: {
-        //     dataSrc: 'sn',
-        //     // editor: editor
-        // },
-        //select: true,
-        // buttons: [
-        //     { extend: 'create', editor: editor },
-        //     { extend: 'edit', editor: editor },
-        //     { extend: 'remove', editor: editor }
-        // ]
-
-    });
 
     // <input class="groupB" type="checkbox" data-row_id="1" onclick="setCheckAll_out()"></input>
     // collapseAll();
-    tree = new $.fn.dataTable.TreeGrid(dataTable, {
-        left: 15,
-        expandAll: true,
-        expandIcon: '<img src="/img/plus.png">',
-        collapseIcon: '<img src="/img/minus.png">',
-    });
+
     //tree.expandAll();
 
 
@@ -597,14 +405,7 @@ $(function () {
 
     }
 
-    function GetNewId() {
-        var id = new Date().getTime();
-        return id;
-    }
-    // get uuid code
-    function GetGuid() {
-        return crypto.randomUUID();
-    }
+
 
 
     //#endregion
@@ -630,11 +431,12 @@ function removeClassFromAll(className) {
 //-------------------------------------------------------------------------------------------------
 var lastrow;
 
-function GetChkBox(data) {
+function GetChkBox(data, className) {
+    if (!className) className = "groupB";
     //console.log("data=", data);
     // console.log("row=", row);
     lastrow = data;
-    return `<input class="groupB" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out()">`;
+    return `<input class="${className}" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out()">`;
 }
 
 function GetPercent_text(data) {

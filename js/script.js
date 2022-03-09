@@ -1,4 +1,30 @@
+
+//جدول النظام
+var Mydb_Table = [];
+
+//الجدول المؤقت
+var Mydb_AllSelection_tmp = [];
+
 //#region  Models
+
+//#region General Method
+function Copy_Object(obj) { return structuredClone(obj); }
+
+
+
+// function Copy_Object2(obj) {
+//     var newObj = {};
+//     for (var key in obj) {
+//         newObj[key] = obj[key];
+//     }
+//     return newObj;
+
+// }
+
+
+//#endregion
+
+
 
 //#region  Itemx Class
 class Itemx {
@@ -21,6 +47,7 @@ class Task_List {
     }
 }
 
+//مهمة واحدة
 class One_Task {
     constructor(id, site, myuser, proj_d) {
         this.id = id;
@@ -33,23 +60,101 @@ class One_Task {
     }
 }
 
+//القوالب
+class Task_Tmp {
+    constructor(name, children) {
+        this.guid = GetGuid();
+        this.id = GetNewId();
+        this.name = name;
+        this.children = children;
 
+    }
+}
 //#endregion
 
 //#region  Task Class
+// class Task {
+//     constructor(ab, id, id_name, mang, tech, natur, proc_type, percent, sn, descrp, children) {
+
+//         // "التسلسلي",
+//         this.id = id;
+
+//         //الاب
+//         this.ab = ab;
+//         // الإجراء
+//         this.id_name = id_name;
+
+//         // تسلسلي العمل
+//         this.name = id;
+
+//         // "الإدارة",
+//         this.mang = mang;
+
+//         // "مدير الإجراء",
+//         this.mang_name = 0;
+
+//         // "الموظفيين الإداريين",
+//         this.emps_mang = [];
+
+
+//         // "المهام الفنية",
+//         this.tech = tech;
+
+//         // "الوصف",
+//         this.descrp = descrp;
+
+//         //طبيعة العمل",
+//         this.natur = natur;
+
+//         //نوع الإجراء",
+//         this.proc_type = proc_type;
+
+//         //النسبة";
+//         this.percent = percent;
+//         this.percent_one = () => { return GetPercent_One(this); };
+//         //نسبة الكل";
+//         this.percent_all = () => { return GetPercent_All(this); };
+
+//         this.sn = sn;
+
+//         // الأبناء
+//         this.children = children;
+
+//         // "البنود",
+//         this.proj_ds = () => { return GetTask_Proj_ds_Ids(this); };
+
+//         // "المواقع",
+//         this.sites = () => { return GetTask_Sites_Ids(this); };
+
+//         // "مدير الموقع",
+//         this.site_mang = 0;
+
+//         // "المسؤولون بالتنفيذ",
+//         this.site_emps = [];
+
+//         // "المدة",
+//         this.duration = 0;
+
+//         this.strart_date = "";
+//         this.end_date = "";
+//         //البداية والنهاية
+//         this.start_end_date = () => { return GetTask_Start_End_Date(this); };
+
+
+//     }
+// }
+
 class Task {
-    constructor(ab, id, id_name, mang, tech, natur, proc_type, percent, sn, descrp, children) {
-
+    constructor(id, name, mang, tech, natur, proc_type, percent, sn, descrp, children) {
+        this.id = "";
         // "التسلسلي",
-        this.id = id;
+        this.id_name = id;
 
+        this.guid = GetGuid();
         //الاب
-        this.ab = ab;
+        this.ab = 0;
         // الإجراء
-        this.id_name = id_name;
-
-        // تسلسلي العمل
-        this.name = id;
+        this.name = name;
 
         // "الإدارة",
         this.mang = mang;
@@ -104,6 +209,30 @@ class Task {
         //البداية والنهاية
         this.start_end_date = () => { return GetTask_Start_End_Date(this); };
 
+
+    }
+}
+class Task_AllSelection {
+    constructor(name, children) {
+        this.guid = GetGuid();
+        this.id = GetNewId();
+
+        // الإجراء
+        this.name = name;
+
+        // "مدير الإجراء",
+        this.mang_name = 0;
+
+        // "الموظفيين الإداريين",
+        this.emps_mang = [];
+
+
+        // "مدير الموقع",
+        this.site_mang = 0;
+
+        // "المسؤولون بالتنفيذ",
+        this.site_emps = [];
+        this.children = children;
 
     }
 }
@@ -291,10 +420,481 @@ var tablex = [
 //#endregion
 
 
+//#region   Template Section
+
+//تجهيز واعتمادات المخططات
+var mapsOk = new Task_Tmp("تجهيز واعتماد المخططات", [
+    new Task_Tmp("استخراج التصاريح", [
+        new Task_Tmp("رخصة المباني", []),
+        new Task_Tmp("رخصة الدفاع المدني", []),
+        new Task_Tmp("رخص من البلدية", [])]),
+    new Task_Tmp("اعتماد المخططات من مكتب إستشاري", [])]);
+
+// الحفر والردم
+var digging = new Task_Tmp("الحفر والردم", [
+    new Task_Tmp("الحفر", [
+        new Task_Tmp("حفر الخزان", []),
+        new Task_Tmp("حفر البيارة", []),
+        new Task_Tmp("حفر الأساسات", [])
+    ]),
+    new Task_Tmp("اسقاط النقط المخطط على الواقع", []),
+    new Task_Tmp("الردم", []),
+]);
+// رش المياه
+var water_TwoDay = new Task_Tmp("رش المياه لمدة يومين", [
+    new Task_Tmp("رش اليوم الأول", []),
+    new Task_Tmp("رش اليوم الثاني", [])
+]);
+var water_SevenDay = new Task_Tmp("رش المياه لمدة سبعة أيام", [
+    new Task_Tmp("رش اليوم الأول", []),
+    new Task_Tmp("رش اليوم الثاني", []),
+    new Task_Tmp("رش اليوم الثالث", []),
+    new Task_Tmp("رش اليوم الرابع", []),
+    new Task_Tmp("رش اليوم الخامس", []),
+    new Task_Tmp("رش اليوم السادس", []),
+    new Task_Tmp("رش اليوم السابع", [])
+
+]);
+
+// أعمال الصبات
+var build_Work = new Task_Tmp("اعمال الصبات", [
+    new Task_Tmp("الحدادة", []),
+    new Task_Tmp("النجارة", []),
+    new Task_Tmp("تقفيل وتقوية النجارة", []),
+    new Task_Tmp("الصبة", []),
+    Copy_Object(water_TwoDay),
+    new Task_Tmp("فك الخشب", [])
+]);
+var build_Work_Roof = new Task_Tmp("اعمال صبات السقف", [
+    new Task_Tmp("الحدادة", []),
+    new Task_Tmp("النجارة", []),
+    new Task_Tmp("تقفيل وتقوية النجارة", []),
+    new Task_Tmp("الصبة", []),
+    Copy_Object(water_SevenDay),
+    new Task_Tmp("فك الخشب", [])
+]);
+var build_Work_Ground = new Task_Tmp("اعمال الصبات الأرضية", [
+    // اعمال الصبات
+    Copy_Object(build_Work),
+    new Task_Tmp("المباني", []),
+    new Task_Tmp("عزل الصبيات", []),
+    new Task_Tmp("دفن", [])
+
+]);
+
+
+// الميدات
+var medat = new Task_Tmp("الميدات", [
+    // اعمال المباني الأرضية
+    Copy_Object(build_Work_Ground)
+]);
+// الأعمدة
+var build_Columns = new Task_Tmp("الأعمدة", [
+    // اعمال المباني 
+    Copy_Object(build_Work)
+]);
+
+// اعمال القواعد
+var build_Base = new Task_Tmp("أعمال القواعد", [
+    // اعمال المباني الأرضية
+    Copy_Object(build_Work_Ground)]);
+
+
+// خزان المياه الأرضي
+var water_Ground = new Task_Tmp("خزان المياه الأرضي", [
+    // اعمال المباني الأرضية
+    Copy_Object(build_Work_Ground)
+]);
+// عمل البيارة
+var water_wells = new Task_Tmp("عمل البيارة", [
+    // اعمال المباني الأرضية
+    Copy_Object(build_Work_Ground)
+]);
+// الخزان والبيارة
+var water_Ground_Wells = new Task_Tmp("الخزان والبيارة", [
+    // خزان المياه الأرضي
+    Copy_Object(water_Ground),
+
+    // عمل البيارة
+    Copy_Object(water_wells),
+
+]);
+
+// أعمال المباني
+var building = new Task_Tmp("أعمال المباني", [
+    new Task_Tmp("عمل المباني", []),
+    new Task_Tmp("نجارة الخشب", []),
+    new Task_Tmp("صب العتب", []),
+    new Task_Tmp("استكمال المباني", [])
+]);
+
+// الإنشاءات في الدور الأرضي
+var build_Ground_Flor = new Task_Tmp("الإنشاءات في الدور الأرضي", [
+
+    //اعمال الحفر والردم
+    Copy_Object(digging),
+
+    // الميدات
+    Copy_Object(medat),
+
+    // اعمال القواعد
+    Copy_Object(build_Base),
+
+    // الخزان والبيارة
+    Copy_Object(water_Ground_Wells),
+
+    // الأعمدة
+    Copy_Object(build_Columns),
+    // اعمال السقف
+    Copy_Object(build_Work_Roof),
+
+    // أعمال المباني
+    Copy_Object(building)
+
+]);
+
+// الإنشاءات في الدور المتكرر
+var build_OtherFlor = new Task_Tmp("الإنشاءات في الدور المتكرر", [
+
+    // الأعمدة
+    Copy_Object(build_Columns),
+    // اعمال السقف
+    Copy_Object(build_Work_Roof),
+
+    // أعمال المباني
+    Copy_Object(building)
+
+]);
+// تأسيس التكييف
+var AirCon_Base = new Task_Tmp("تأسيس التكييف", [
+    new Task_Tmp("حفر وتمديد مواسير النحاس", []),
+    new Task_Tmp("حفر وتمديد مواسير الصرف", []),
+]);
+
+// تشطيب التكييف
+var AirCon_Finsh = new Task_Tmp("تشطيب التكييف", [
+    new Task_Tmp("تركيب الوحدات الداخلية", []),
+    new Task_Tmp("تركيب الوحدات الخارجية", []),
+]);
+
+// اعمال التكييف
+var AirCon_Work = new Task_Tmp("اعمال التكييف", [
+    // تأسيس التكييف
+    Copy_Object(AirCon_Base),
+
+    // تشطيب التكييف
+    Copy_Object(AirCon_Finsh)
+]);
+
+// البلاط
+var tiles_Work = new Task_Tmp("البلاط", [
+    new Task_Tmp("تركيب بلاط الحوائط", []),
+    new Task_Tmp("تركيب بلاط الأرضيات", []),
+    new Task_Tmp("عمل الترويبة", [])
+]);
+
+// تأسيس الكهرباء
+
+var Elect_Base = new Task_Tmp("تأسيس الكهرباء", [
+    new Task_Tmp("تكسير الجدران لمسار المواسير", []),
+    new Task_Tmp("تمديد المواسير", []),
+    new Task_Tmp("تمديد الكيبلات", []),
+    new Task_Tmp("تركيب علب الكهرباء", []),
+
+]);
+var Elect_Finsh = new Task_Tmp("تشطيب الكهرباء", [
+    new Task_Tmp("تركيب الأفياش", []),
+    new Task_Tmp("تركيب الإنارة", []),
+    new Task_Tmp("تركيب مراوح الشفط", []),
+    new Task_Tmp("تركيب السخانات", []),
+    new Task_Tmp("تركيب المراوح", []),
+    // تشطيب التكييف
+    Copy_Object(AirCon_Finsh)
+]);
+
+
+
+var Water_Base_Internal = new Task_Tmp("تأسيس السباكة الداخلية", [
+    new Task_Tmp("تكسير الجدران لمسار المواسير", []),
+    new Task_Tmp("تمديد مواسير المياه", []),
+    new Task_Tmp("تمديد مواسير الصرف", []),
+    new Task_Tmp("صبة فوق مواسير الصرف", []),
+    new Task_Tmp("ضغط المواسير", []),
+    // تأسيس التكييف
+    Copy_Object(AirCon_Base)
+
+]);
+
+
+// تأسيس السباكة الخارجية
+var Water_Base_External = new Task_Tmp("تأسيس السباكة الخارجية", [
+    new Task_Tmp("تمديد مواسير الصرف الصحي لأقرب بيارة", []),
+    new Task_Tmp("تمديد مواسير المياه من الخزان إلى المبنى", []),
+    new Task_Tmp("توصيل مياه البلدية للخزان الأرضي", []),
+    new Task_Tmp("تمديد المياه من الخزان الأرضي إلى الخزان العلوي", [])
+]);
+
+// تأسيس السباكة
+var Water_Base = new Task_Tmp("تأسيس السباكة", [
+    // تأسيس السباكة الداخلية
+    Copy_Object(Water_Base_Internal),
+    // تأسيس السباكة الخارجية
+    Copy_Object(Water_Base_External)
+]);
+
+
+// تشطيب السباكة
+var Water_Finsh = new Task_Tmp("تشطيب السباكة", [
+    new Task_Tmp("تركيب الأجهزة الصحية", []),
+    new Task_Tmp("تركيب الخلاطات", []),
+
+]);
+
+var Water_Work = new Task_Tmp("اعمال السباكة", [
+    // تأسيس السباكة
+    Copy_Object(Water_Base),
+    // تشطيب السباكة
+    Copy_Object(Water_Finsh)
+]);
+
+
+var Elect_Work = new Task_Tmp("أعمال الكهرباء", [
+    // تأسيس الكهرباء
+    Copy_Object(Elect_Base),
+    // تشطيب الكهرباء
+    Copy_Object(Elect_Finsh)
+]);
+
+
+
+
+
+
+
+
+
+
+
+
+var finishing = new Task_Tmp("التشطيبات", [
+    // تأسيس الكهرباء
+    Copy_Object(Elect_Base),
+    // تأسيس السباكة
+    Copy_Object(Water_Base),
+    new Task_Tmp("لياسة", []),
+    new Task_Tmp("اعمال جبص", []),
+    new Task_Tmp("تأسيس نقاشة", []),
+    // البلاط
+    Copy_Object(tiles_Work),
+    // تشطيب السباكة
+    Copy_Object(Water_Finsh),
+    // تشطيب الكهرباء
+    Copy_Object(Elect_Finsh),
+    new Task_Tmp("تشطيب نقاشة", []),
+    new Task_Tmp("تسليم المفتاح", []),
+]);
+
+var build_Tmp = new Task_Tmp("أعمال مقاولات", [
+    // الإنشاءات في الدور الأرضي
+    Copy_Object(build_Ground_Flor),
+
+    // الإنشاءات في الدور المتكرر   
+    Copy_Object(build_OtherFlor),
+    // التشطيبات
+    Copy_Object(finishing)
+
+]);
+
+
+
+
+
+
+
+
+//#endregion
+
+
+//#region المشاريع
+
+// إعتماد مهندس
+var Eng_tmp = new Task_Tmp("إعتماد مهندس", [
+    new Task_Tmp("شهادة الجامعة", []),
+    new Task_Tmp("الخبرات", []),
+    new Task_Tmp("الإقامة", []),
+    new Task_Tmp("خطاب", []),
+    new Task_Tmp("عقد العمل", []),
+    new Task_Tmp("تحديد الوزارة", []),
+    new Task_Tmp("استقدام عمال", [])
+]);
+
+// عمل منافسة
+var competition = new Task_Tmp("عمل منافسة", [
+    new Task_Tmp("تقديم خطاب بوضع الشركة وقبولها للمنافسة", []),
+    new Task_Tmp("تسعير منافسة", []),
+    new Task_Tmp("تجهيز شروط الدخول للمنافسة", []),
+    new Task_Tmp("معرفة ثمن الوثيقة", []),
+    new Task_Tmp("مناقشة الجهة في طبيعة العمل", []),
+    new Task_Tmp("مراجعة اسم المشروع وتخصصه", []),
+    new Task_Tmp("تحديد المشروع", []),
+    new Task_Tmp("شراء منافسة", []),
+
+]);
+// استلام المشروع 
+var proj_Recived_tmp = new Task_Tmp("استلام المشروع", [
+    new Task_Tmp("استلام وثيقة المشروع", []),
+    new Task_Tmp("استلام المخططات", []),
+    new Task_Tmp("استلام المواقع", []),
+    new Task_Tmp("بدء العمل على المشروع", [])
+]);
+// تسليم المشروع النهائي
+var proj_Finsh = new Task_Tmp("تسليم المشروع نهائياً", [
+    new Task_Tmp("عمل الحصورات", []),
+    new Task_Tmp("المستخلصات", []),
+    new Task_Tmp("تسليم المشروع", []),
+]);
+
+// إدارة المشروع
+var Proj_mang = new Task_Tmp("إدارة المشروع", [
+    new Task_Tmp("إدارة المشروع", []),
+    new Task_Tmp("إعتماد جهاز", []),
+    new Task_Tmp("مقابلة العملاء", []),
+    new Task_Tmp("تشجيع عمال", []),
+    new Task_Tmp("تطوير الذات", []),
+    new Task_Tmp("تطوير الفنيي", [])
+]);
+
+// أعمال المشاريع
+var proj_Work = new Task_Tmp("أعمال المشاريع", [
+    // عمل منافسة
+    Copy_Object(competition),
+
+    // إعتماد مهندس
+    Copy_Object(Eng_tmp),
+
+    // استلام المشروع 
+    Copy_Object(proj_Recived_tmp),
+
+    // تسليم المشروع النهائي
+    Copy_Object(proj_Finsh),
+
+    // إدارة المشروع
+    Copy_Object(Proj_mang),
+]);
+//#endregion
+
+
+
+
+
+// #region كل الأعمال
+var All_Temp = [
+
+    // اعمال المشاريع
+    Copy_Object(proj_Work),
+    // إعتماد مهندس
+    Copy_Object(Eng_tmp),
+    // عمل منافسة
+    Copy_Object(competition),
+
+    // استلام المشروع 
+    Copy_Object(proj_Recived_tmp),
+
+    // تسليم المشروع النهائي
+    Copy_Object(proj_Finsh),
+
+    // إدارة المشروع
+    Copy_Object(Proj_mang),
+    // أعمال المقاولات
+    Copy_Object(build_Tmp),
+    // الأنشاءات في الدور الأرضي
+    Copy_Object(build_Ground_Flor),
+    // الأنشاءات في الأدوار المتكررة
+    Copy_Object(build_OtherFlor),
+    //تجهيز واعتمادات المخططات
+    Copy_Object(mapsOk),
+
+    //أعمال الصبات
+    Copy_Object(build_Work),
+
+
+    //----------الكهرباء--------------
+    // اعمال الكهرباء
+    Copy_Object(Elect_Work),
+    // تأسيس الكهرباء
+    Copy_Object(Elect_Base),
+    // تشطيب الكهرباء
+    Copy_Object(Elect_Finsh),
+
+    //----------التكييف--------------
+    // اعمال التكييف
+    Copy_Object(AirCon_Work),
+    // تأسيس التكييف
+    Copy_Object(AirCon_Base),
+    // تشطيب التكييف
+    Copy_Object(AirCon_Finsh),
+    //----------التكييف--------------
+    //----------الكهرباء--------------
+
+    //----------السباكة--------------
+    // اعمال السباكة
+    Copy_Object(Water_Work),
+    // تأسيس السباكة
+    Copy_Object(Water_Base),
+    // تأسيس السباكة الداخلية
+    Copy_Object(Water_Base_Internal),
+    // تأسيس السباكة الخارجية
+    Copy_Object(Water_Base_External),
+    // تشطيب السباكة
+    Copy_Object(Water_Finsh),
+
+    //----------السباكة--------------
+    // البلاط
+    Copy_Object(tiles_Work),
+
+    // اعمال الصبات الأرضية
+    Copy_Object(build_Work_Ground),
+
+    // اعمال صبات السقف
+    Copy_Object(build_Work_Roof),
+
+    // الأعمدة
+    Copy_Object(build_Columns),
+
+    //اعمال الميدات
+    Copy_Object(medat),
+    // القواعد
+    Copy_Object(build_Base),
+
+    // الخزان والبيارة
+    Copy_Object(water_Ground_Wells),
+
+    // الخزان الأرضي
+    Copy_Object(water_Ground),
+
+    // اعمال البيارة
+    Copy_Object(water_wells),
+
+    //اعمال الحفر والردم
+    Copy_Object(digging),
+
+    //رش المياه لمدة يومين
+    Copy_Object(water_TwoDay)
+];
+
+// #endregion
 
 //#region DataMethods
 
-
+function GetNewId() {
+    var id = new Date().getTime();
+    var rnd = Math.round(Math.random() * 100000);
+    return id + "" + rnd;
+}
+// get uuid code
+function GetGuid() {
+    return crypto.randomUUID();
+}
 
 
 
@@ -348,8 +948,7 @@ function GetPercent_One(task) {
         if (!curr_Child.emps_mang) curr_Child.emps_mang = [];
         if (!curr_Child.site_emps) curr_Child.site_emps = [];
 
-        if (curr_Child.emps_mang.length == 0
-            && curr_Child.site_emps.length == 0) {
+        if (curr_Child.emps_mang.length == 0 && curr_Child.site_emps.length == 0) {
             return curr_Child.percent;
         }
 
@@ -551,6 +1150,97 @@ function GetProc_Type(id) {
 //#endregion
 
 
+
+
+//#region   Select Section
+
+
+
+function hide_All() {
+    var cmdConfirm = document.querySelector(".cmdConfirm");
+    cmdConfirm.classList.add("visually-hidden");
+    var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
+    var dt_tmp_site = document.querySelector(".dt_tmp_site");
+    var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    dt_tmp_proj_d.classList.add("visually-hidden");
+    dt_tmp_site.classList.add("visually-hidden");
+    dt_tmp_user.classList.add("visually-hidden");
+}
+
+// تأكيد إختيار البنود والموظفين والمواقع
+function Confirm(e) {
+    // تغيير مدير الإجراء
+    if (oper_type == oper_changeManger) {
+        var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+        if (myUser_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر موظف", "خطأ لا يمكن اتمام العملية"); return; }
+        if (myUser_Select.length > 1) { msgbox_tmp("لا بد من اختيار شخص واحد فقط", "خطأ لا يمكن اتمام العملية"); return; }
+        var myUser_id = myUser_Select[0].dataset.row_id;
+        if (oper_Id && myUser_id) {
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                current.mang_name = myUser_id;
+            }
+        }
+    }
+    // الموظفيين الإداريين
+    else if (oper_type == oper_emps_mang) {
+
+    }
+
+    // تغيير مدير الموقع
+    else if (oper_type == oper_changeSiteManger) {
+
+    }
+    //المسولون بالتنفيذ
+    else if (oper_type == oper_changeSiteEmps) {
+
+    }
+
+    hide_All();
+
+}
+//تغيير المدير
+function changeManger(e) {
+    oper_type = oper_changeManger;
+    oper_Id = e.target.parentNode.dataset.row_id;
+
+    //ToDo: تغيير المدير
+    اكمال تغيير المدير;
+    هنا;
+    var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
+    var dt_tmp_site = document.querySelector(".dt_tmp_site");
+    var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    var cmdConfirm = document.querySelector(".cmdConfirm");
+    cmdConfirm.classList.remove("visually-hidden");
+    dt_tmp_user.classList.remove("visually-hidden");
+    //
+    console.log("changeManger", e);
+}
+
+// الموظفيين الإداريين
+function change_emps_mang(e) {
+    oper_type = oper_emps_mang;
+    console.log("change_emps_mang", e);
+}
+
+// مدير الموقع
+function change_site_mang(e) {
+    oper_type = oper_changeSiteManger;
+    console.log("change_site_mang", e);
+}
+
+// المسؤولون بالتنفيذ
+function change_site_emps(e) {
+    oper_type = oper_changeSiteEmps;
+    console.log("change_site_emps", e);
+}
+
+
+//#endregion
+
+
+
+
 //#endregion
 
 
@@ -579,6 +1269,11 @@ function collapseAll() {
 var oper_type = "";
 var oper_all = "all";
 var oper_one = "one";
+var oper_changeManger = "changeManger";
+var oper_changeSiteManger = "changeSiteManger";
+var oper_emps_mang = "emps_mang";
+var oper_changeSiteManger = "changeSiteManger";
+var oper_Id = "";
 
 
 var myData = [];
@@ -587,7 +1282,7 @@ var forAll_proj_d = proj_d.map(a => new Itemx(a.id, a.name));
 var forAll_myuser = myuser.map(a => new Itemx(a.id, a.name));
 
 
-var MyModal = new bootstrap.Modal(document.getElementById('MyModal'));
+// var MyModal = new bootstrap.Modal(document.getElementById('MyModal'));
 
 function GetAllId() {
     var listId = document.querySelectorAll(".myId");
@@ -615,9 +1310,9 @@ function chkAllData() {
             index1 = myData.findIndex(w => w.id == ww);
 
         }
-        if (myData[index1].myuser.length == 0) { myData[index1].myuser = myuser.map(a => new Itemx(a.id, a.name)); };
-        if (myData[index1].proj_d.length == 0) { myData[index1].proj_d = proj_d.map(a => new Itemx(a.id, a.name)); };
-        if (myData[index1].sites.length == 0) { myData[index1].sites = sites.map(a => new Itemx(a.id, a.name)); };
+        if (myData[index1].myuser.length == 0) { myData[index1].myuser = myuser.map(a => new Itemx(a.id, a.name)); }
+        if (myData[index1].proj_d.length == 0) { myData[index1].proj_d = proj_d.map(a => new Itemx(a.id, a.name)); }
+        if (myData[index1].sites.length == 0) { myData[index1].sites = sites.map(a => new Itemx(a.id, a.name)); }
     });
     // for (const [key, w] of Object.entries(myData)) {
     //     //  myData.forEach(w => {
@@ -660,9 +1355,9 @@ function chkData(myId, table) {
         //  myData.forEach(w => {
         if (w.id == myId) {
             //if (w.myuser.length == 0) { w.myuser = myuser.map(a => { return { ...a }; }); }
-            if (w.myuser.length == 0) { w.myuser = myuser.map(a => new Itemx(a.id, a.name)); };
-            if (w.proj_d.length == 0) { w.proj_d = proj_d.map(a => new Itemx(a.id, a.name)); };
-            if (w.sites.length == 0) { w.sites = sites.map(a => new Itemx(a.id, a.name)); };
+            if (w.myuser.length == 0) { w.myuser = myuser.map(a => new Itemx(a.id, a.name)); }
+            if (w.proj_d.length == 0) { w.proj_d = proj_d.map(a => new Itemx(a.id, a.name)); }
+            if (w.sites.length == 0) { w.sites = sites.map(a => new Itemx(a.id, a.name)); }
 
             var entry;
             if (table == table_User) { entry = w.myuser; }
@@ -678,6 +1373,7 @@ function chkData(myId, table) {
 
 function getMyId(oe) {
     return oe.parentNode.parentNode.querySelector(".myId").innerText;
+
 
 }
 
@@ -764,6 +1460,208 @@ function cmdMyUser(oe) {
 
     showModel(table_User, myId, entry);
 }
+var tree;
+//تشغيل الجدول
+function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
+    if (!scroollYSize) scroollYSize = "39vh";
+    var DT_Option = {
+        data: data,
+        columns: columns,
+        dom: "tr",
+        //dom: 'l<"H"Rf>t<"F"ip>',
+        ordering: false,
+        rowReorder: false,
+        colReorder: false,//تحريك الأعمدة
+        "jQueryUI": true,
+        //------------------------------------------
+        //تثبيت الأعمدة
+        // scrollY: scroll_Y,
+        // scrollX: scroll_X,
+        // scrollCollapse: scroll_Collapse,
+        fixedColumns: {
+            left: 1,
+            right: 1
+        },
+        //        scrollY: "50vh",
+        scrollY: scroollYSize,
+
+        scrollX: Isfixed,
+        scrollCollapse: Isfixed,
+        paging: false,
+        autoWidth: true,
+
+        // `<input type="hidden" class="site" />
+        //     <input type = "hidden" class= "myuser" />
+        //     <input type="hidden" class="proj_d" />
+        //     <button class="btn btn-primary cmdProj_d" onclick="cmdProj_d(this)">البنود </button>
+        //     <button class="btn btn-success cmdSite" onclick="cmdSite(this)">المواقع</button>
+        //     <button class="btn btn-dark cmdMyUser" onclick="cmdMyUser(this)">الأشخاص</button>
+        //     <button class="btn btn-warning cmdTable" onclick="cmdTable(this)">الإجراءات</button>`
+
+        columnDefs: [
+            {
+                defaultContent: "",
+                targets: "_all",
+            },
+            // { orderable: true, className: 'reorder', targets: 0 },
+            // { orderable: false, targets: '_all' }
+        ],
+        // rowReorder: {
+        //     dataSrc: 'sn',
+        //     // editor: editor
+        // },
+        //select: true,
+        // buttons: [
+        //     { extend: 'create', editor: editor },
+        //     { extend: 'edit', editor: editor },
+        //     { extend: 'remove', editor: editor }
+        // ]
+    };
+
+
+    if (!Isfixed) {
+        //scrollY: "50vh",
+        //delete DT_Option.scrollY;
+        //DT_Option.scrollY = "300px";
+        delete DT_Option.fixedColumns;
+        delete DT_Option.scrollX;
+        delete DT_Option.scrollCollapse;
+
+    }
+    // function resizePage() {
+    //     const container = $("#TableContainer");
+    //     const height = container.height() - container.find(".dataTables_scrollHead").height();
+    //     updateDataTable(height + "px");
+    // };
+
+    // var resizeTimer;
+
+    // $(window).resize(function () {
+    //     clearTimeout(resizeTimer);
+    //     resizeTimer = setTimeout(resizePage, 100);
+    // });
+
+    // function updateDataTable(scrollHeight) {
+    //     $('#example').DataTable(
+    //         {
+    //             destroy: true,
+    //             paging: false,
+    //             "bFilter": false,
+    //             "bInfo": false,
+    //             scrollY: scrollHeight,
+    //             columnDefs: [{ width: "16%", targets: 0 }]
+    //         }
+    //     );
+    // }
+
+    // $(document).ready(function () {
+    //     updateDataTable('1px'); // give it any height, it will be changed by the timer event, but it needs some size for the page to work
+    //     resizeTimer = setTimeout(resizePage, 100);
+    // });
+
+
+    var dt = $('#' + dataTableId).DataTable(DT_Option);
+    if (dt) {
+
+        tree = new $.fn.dataTable.TreeGrid(dt, {
+            left: 15,
+            expandAll: true,
+            expandIcon: '<img class="tree_button" src="/img/plus.png">',
+            collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+        });
+    }
+    // dt.on('click', 'tr', function (e) {
+    //     try {
+    //         console.log(e.target.parentNode);
+    //         var eel = e.target.parentNode.querySelector('[type="checkbox"]');
+
+    //         console.log(eel);
+    //         eel.checked = !eel.checked;
+    //     } catch { }
+    // });
+
+    tr_Event_Click();
+    return dt;
+
+
+
+
+}
+
+function tr_Event_Click() {
+
+    document.querySelectorAll('table tr').forEach(x => {
+        x.onclick = function (e) {
+            try {
+
+                //console.log(e.target.parentNode);
+                var eel = e.target.parentNode.querySelector('[type="checkbox"]');
+                if (eel != e.target) {
+                    console.log(e.target);
+                    if (!e.target.classList.contains("tree_button")) {
+                        if (!e.target.classList.contains("treegrid-control-open")) {
+                            if (!e.target.classList.contains("treegrid-control")) {
+
+                                //eel.checked = !eel.checked;
+                                eel.click();
+                            }
+                        }
+                    }
+
+                }
+            } catch { }
+        };
+    });
+
+}
+//زر فتح شاشة القوالب
+function cmdAdd_Tmp(oe) {
+    showAdd_Tmp();
+}
+
+// زر اختيار كل القوالب أو الإلغاء
+function check_tmp_All_Task(oe) {
+    document.querySelectorAll('.tmp_task').forEach(el => {
+        el.checked = oe.checked;
+        //  checkChange(el);
+    }
+    );
+}
+
+// زر إختيار كل البنود أو الإلغاء
+function checkAll_tmp_Proj_d(oe) {
+    document.querySelectorAll('.tmp_proj_d').forEach(el => {
+        el.checked = oe.checked;
+        //  checkChange(el);
+    }
+    );
+}
+function checkAll_tmp_User(oe) {
+    document.querySelectorAll('.tmp_user').forEach(el => {
+        el.checked = oe.checked;
+        //  checkChange(el);
+    }
+    );
+}
+// زر إختيار المواقع أو الإلغاء
+function checkAll_tmp_Location(oe) {
+    document.querySelectorAll('.tmp_site').forEach(el => {
+        el.checked = oe.checked;
+        //  checkChange(el);
+    }
+    );
+}
+var tmpTable;
+var tmpAllSelection;
+
+var tmpUser;
+var tmpProj_d;
+var tmpSite;
+var cmdSavetmp;
+
+
+// شاشة القوالب
+
 
 
 function cmdTable_All(oe) {
@@ -797,9 +1695,9 @@ function showModel_Table() {
     var Table_Location_Body = document.getElementById("Table_Location_Body");
     var tr2 = "";
     for (const [key, w] of Object.entries(sites)) {
-        var chk = "unchecked";
+        var chk1 = "unchecked";
         tr2 += ` <tr>
-                    <td><input class="groupD" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+                    <td><input class="groupD" type="checkbox" ${chk1}  data-id="${w.id}"   onclick=""> </td>
                     <td>
                         ${w.name}
                     </td>
@@ -814,9 +1712,9 @@ function showModel_Table() {
     var Table_User_Body = document.getElementById("Table_User_Body");
     var tr3 = "";
     for (const [key, w] of Object.entries(myuser)) {
-        var chk = "unchecked";
+        var chk2 = "unchecked";
         tr3 += ` <tr>
-                    <td><input class="groupE" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+                    <td><input class="groupE" type="checkbox" ${chk2}  data-id="${w.id}"   onclick=""> </td>
                     <td>
                         ${w.name}
                     </td>
@@ -852,6 +1750,10 @@ function showModel_All(table, entry) {
 
         modal_Err_title.innerText = "خطأ لا يمكن اتمام العملية";
         modal_Err_desc.innerText = "لم تقم بإختيار احد الخيارات يمين الشاشة ، نرجو الإختار المواصلة";
+
+
+
+
 
         modal_MyErr.show();
 
@@ -1008,7 +1910,7 @@ function cmdSave() {
         }
         );
     }
-    if (oper_type = oper_all) {
+    if (oper_type == oper_all) {
 
         document.querySelectorAll('.groupA').forEach(el => {
             document.querySelectorAll(".groupB").forEach(bb => {
@@ -1164,3 +2066,580 @@ function change_Serial_No(tasks, abId) {
 
 }
 
+function msgbox_tmp(msg, title) {
+
+
+
+
+    if (!title) { title = "-------"; }
+    if (!msg) { msg = "----------"; }
+
+
+    var liveToast = document.querySelector("#liveToast");
+    var msg_Caption = document.querySelector(".me-auto");
+    var msg_element = document.querySelector(".toast-body");
+
+    msg_Caption.innerHTML = title;
+    msg_element.innerHTML = msg;
+
+
+
+    var toast = new bootstrap.Toast(liveToast);
+
+    toast.show();
+
+
+
+}
+
+
+//#region  حفظ البيانات-----------------------------------------------------------
+function insert_Tmp_To_Select(e) {
+    var modal_MyErr_elem_Name = "modal_MyErr";
+    var modal_MyErr = new bootstrap.Modal(document.querySelector("#" + modal_MyErr_elem_Name));
+    var modal_Err_title = document.querySelector(".modal_Err_title");
+    var modal_Err_desc = document.querySelector(".modal_Err_desc");
+
+    var mytmp_Select = document.querySelectorAll('.tmp_task:checked');
+    var mySite_Select = document.querySelectorAll('.tmp_site:checked');
+    var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+    var myProj_d_Select = document.querySelectorAll('.tmp_proj_d:checked');
+
+    if (mytmp_Select.length == 0) {
+
+
+
+        msgbox_tmp("لم تقم بإختيار احد قوالب الإجراءات يمين الشاشة ، نرجو الإختيار المواصلة", "خطأ لا يمكن اتمام العملية");
+        return;
+    }
+    try {
+        mytmp_Select.forEach(w => {
+            var id = w.dataset.row_id;
+            var tmp = All_Temp.find(x => x.id == id);
+            Mydb_AllSelection_tmp.push(new Task_AllSelection(tmp.name, tmp.children));
+
+
+        });
+    } catch { }
+
+    ReLoad_tmpAllSelection();
+}
+// شاشة العرض
+var screen;
+var MyModal;
+
+
+function cmdSavetmp_Click(e) {
+    var modal_MyErr_elem_Name = "modal_MyErr";
+    var modal_MyErr = new bootstrap.Modal(document.querySelector("#" + modal_MyErr_elem_Name));
+    var modal_Err_title = document.querySelector(".modal_Err_title");
+    var modal_Err_desc = document.querySelector(".modal_Err_desc");
+
+    var mytmp_Select = document.querySelectorAll('.tmp_task:checked');
+    var mySite_Select = document.querySelectorAll('.tmp_site:checked');
+    var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+    var myProj_d_Select = document.querySelectorAll('.tmp_proj_d:checked');
+
+    if (Mydb_AllSelection_tmp.length == 0) {
+
+        msgbox_tmp("لم تقم بإختيار احد قوالب الإجراءات يمين الشاشة ، نرجو الإختيار المواصلة", "خطأ لا يمكن اتمام العملية");
+        return;
+    }
+
+    try {
+        Mydb_AllSelection_tmp.forEach(w => {
+
+            // console.log("w=>", w);
+
+            var id = w.id;
+            // console.log("id=", id);
+            var name = w.name;
+            // console.log("name=", name);
+            var childs = w.children;
+            // console.log("childs=", childs);
+            var www = new Task(id, name, 0, 0, 0, 0, 0, 0, "", childs);
+            // console.log("www=", www);
+            // console.log("Mydb_AllSelection_tmp--1=", Mydb_Table);
+            Mydb_Table.push(www);
+
+            // console.log("Mydb_AllSelection_tmp--2=", Mydb_Table);
+
+        });
+    } catch { }
+
+    change_Serial_No(Mydb_Table);
+    Reload_dataTable();
+
+
+
+
+
+    // شاشة العرض
+    // if (!screen) { screen = document.getElementById("MyTmpAction"); }
+    // if (!MyModal) { MyModal = new bootstrap.Modal(screen); }
+
+    tr_Event_Click();
+
+
+    MyModal.hide();
+}
+function Reload_dataTable() {
+    if (!dataTable) {
+        dataTable = Open_Datatable("MyTable", Mydb_Table, true, "65vh", [
+            {
+                // ازرار الإختيار
+                className: "forChild",
+                data: function (data, type, row) { return GetChkBox(data); },
+            },
+            {
+                // زر الشجرة
+                className: "treegrid-control forChild ",
+                data: function (item) {
+                    if (item.children != null && item.children.length > 0) {
+                        return '<img class="tree_button" src="/img/plus.png">';
+                    }
+                    return "";
+                },
+            },
+            // { "data": "ab" },
+            {
+                // الرقم التسلسلي
+                data: "id",
+                className: "myId forChild subChild",
+            },
+            {
+                // الإجراءات
+                data: "name",
+                // render: function (data, type, row) {
+                //     return GetName(data);
+                // },
+            },
+            {
+                // الإدارة
+                data: "mang",
+                render: function (data, type, row) {
+                    return GetMang(data);
+                },
+            },
+            {
+                // مدير الإجراء
+                data: "mang_name",
+                render: function (data, type, row) {
+                    return GetUser_Name(data);
+                },
+            },
+            {
+                // الموظفيين الإداريين
+                data: "emps_mang",
+                render: function (data, type, row) {
+                    return GetUsers_Name(data);
+                },
+            },
+            {
+                // البنود
+                data: "proj_ds",
+                render: function (data, type, row) {
+                    return GetProj_ds_Name(data);
+                },
+            },
+            {
+                // المواقع
+                data: "sites",
+                render: function (data, type, row) {
+                    return GetSites_Name(data);
+                },
+            },
+            {
+                // مدير الموقع
+                data: "site_mang",
+                render: function (data, type, row) {
+                    return GetUser_Name(data);
+                },
+            },
+            {
+                // المسؤولون بالتنفيذ
+                data: "site_emps",
+                render: function (data, type, row) {
+                    return GetUsers_Name(data);
+                },
+            },
+
+            {
+                // المهام الفنية
+                data: "tech",
+                render: function (data, type, row) {
+                    return GetTech(data);
+                },
+            },
+            {
+                // المدة
+                data: "duration",
+                render: function (data, type, row) {
+                    return GetDuration(data);
+                },
+            },
+            {
+                //البداية والنهاية
+                data: "start_end_date",
+                render: function (data, type, row) {
+                    return Get_start_end_date(row);
+                },
+            },
+            {
+                data: "descrp",
+            },
+            {
+                data: "natur",
+                render: function (data, type, row) {
+                    return GetNatur(data);
+                },
+            },
+            {
+                data: "proc_type",
+                render: function (data, type, row) {
+                    return GetProc_Type(data);
+                },
+            },
+            {
+                data: "percent_one",
+                render: function (data, type, row) {
+                    return GetPercent_text(data);
+                },
+            },
+            {
+                data: "percent_all",
+                render: function (data, type, row) {
+                    return GetPercent_All_Text(data);
+                },
+            },
+            {
+                data: "sn",
+                render: function (data, type, row) {
+                    return `
+                        <div class="btn-group-vertical">  <button class="btn btn-warning cmdProj_d" onclick="cmdProj_d(this)">تعديلات </button>
+                        <button class="btn btn-dark cmdTable" onclick="cmdTable(this)">ربط بجداول</button></div>`;
+                },
+            },
+        ]);
+    }
+    else {
+
+
+        dataTable.clear();
+        dataTable.rows.add(Mydb_Table);
+        dataTable.draw();
+    }
+    if (dataTable) {
+        if (!tree) {
+            tree = new $.fn.dataTable.TreeGrid(dataTable, {
+                left: 15,
+                expandAll: true,
+                expandIcon: '<img class="tree_button" src="/img/plus.png">',
+                collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+            });
+        }
+    }
+    tr_Event_Click();
+}
+function ReLoad_tmpAllSelection() {
+    if (!tmpAllSelection) {
+        tmpAllSelection = Open_Datatable("tmp_allSelection_Element", Mydb_AllSelection_tmp, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_AllSelection"); },
+                },
+                {
+                    // زر الشجرة
+                    className: "treegrid-control forChild ",
+                    // width: "20%",
+
+                    data: function (item) {
+                        if (item.children != null && item.children.length > 0) {
+                            return '<img class="tree_button" src="/img/plus.png">';
+                        }
+                        return "";
+                    },
+                },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                },
+                {
+                    // مدير الإجراء
+                    data: "mang_name",
+                    render: function (data, type, row) {
+                        return `<button onclick="changeManger(this)">***</button> ` + GetUser_Name(data);
+                    },
+                },
+                {
+
+                    // الموظفيين الإداريين
+                    data: "emps_mang",
+                    render: function (data, type, row) {
+                        return `<button onclick="change_emps_mang(this)">***</button> ` + GetUsers_Name(data);
+                    },
+                },
+
+                {
+                    // مدير الموقع
+                    data: "site_mang",
+                    render: function (data, type, row) {
+                        return `<button onclick="change_site_mang(this)">***</button> ` + GetUser_Name(data);
+                    },
+                },
+                {
+                    // المسؤولون بالتنفيذ
+                    data: "site_emps",
+                    render: function (data, type, row) {
+                        return `<button onclick="change_site_emps(this)">***</button> ` + GetUsers_Name(data);
+                    },
+                },
+
+            ]);
+    }
+    else {
+        tmpAllSelection.clear();
+        tmpAllSelection.rows.add(Mydb_AllSelection_tmp);
+        tmpAllSelection.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
+    // }
+    tr_Event_Click();
+    return tmpAllSelection;
+}
+
+var tmpTree;
+//لعرض شاشة الإضافة
+function showAdd_Tmp() {
+    // زر الحفظ
+    cmdSavetmp = document.getElementById("cmdSavetmp");
+    console.log("tmptabl");
+    //الجدول داخل صفحة الhtml
+    if (!tmpTable) {
+        tmpTable = Open_Datatable("tmp_Task_Element", All_Temp, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_task"); },
+                },
+                {
+                    // زر الشجرة
+                    className: "treegrid-control forChild ",
+                    // width: "20%",
+
+                    data: function (item) {
+                        if (item.children != null && item.children.length > 0) {
+                            return '<img class="tree_button" src="/img/plus.png">';
+                        }
+                        return "";
+                    },
+                },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                }
+            ]);
+    }
+    console.log("reload1");
+
+    ReLoad_tmpAllSelection();
+    console.log("reload2");
+
+
+    // tbody داخل شاشة العرض
+    var tmpTask_Body = document.getElementById("tmpTask_Body");
+
+    // tbody الموقع
+    var tmp_Location_Body = document.getElementById("tmp_Location_Body");
+
+    // tbody البند
+    var tmp_Proj_d_Body = document.getElementById("tmp_Proj_d_Body");
+
+    // tbody الموظف
+    var tmp_User_Body = document.getElementById("tmp_User_Body");
+
+
+
+
+    if (!tmpSite) {
+        tmpSite = Open_Datatable("tmp_Site_Element", sites, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_site"); },
+                },
+                // {
+                //     // زر الشجرة
+                //     className: "treegrid-control forChild ",
+                //     // width: "20%",
+
+                //     data: function (item) {
+                //         if (item.children != null && item.children.length > 0) {
+                //             return '<img class="tree_button" src="/img/plus.png">';
+                //         }
+                //         return "";
+                //     },
+                // },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                }
+            ]);
+    }
+    // var tr2 = "";
+    // for (const [key, w] of Object.entries(sites)) {
+    //     var chk = "unchecked";
+    //     tr2 += ` <tr>
+    //                 <td><input class="tmp_site" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
+    //                 <td>
+    //                     ${w.name}
+    //                 </td>
+    //                  <td>
+    //                     <!-- <button>عرض المواقع</button> -->
+    //                 </td>
+    //             </tr>`;
+    // }
+
+    // tmp_Location_Body.innerHTML = tr2;
+
+    if (!tmpUser) {
+        tmpUser = Open_Datatable("tmp_User_Element", myuser, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_user"); },
+                },
+                // {
+                //     // زر الشجرة
+                //     className: "treegrid-control forChild ",
+                //     // width: "20%",
+
+                //     data: function (item) {
+                //         if (item.children != null && item.children.length > 0) {
+                //             return '<img class="tree_button" src="/img/plus.png">';
+                //         }
+                //         return "";
+                //     },
+                // },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                }
+            ]);
+    }
+
+    // var tr3 = "";
+    // for (const [key, w] of Object.entries(myuser)) {
+    //     var chk4 = "unchecked";
+    //     tr3 += ` <tr>
+    //                 <td><input class="tmp_user" type="checkbox" ${chk4}  data-id="${w.id}"   onclick=""> </td>
+    //                 <td>
+    //                     ${w.name}
+    //                 </td>
+    //                  <td>
+    //                     <!-- <button>عرض الأشخاص</button> -->
+    //                 </td>
+    //             </tr>`;
+    // }
+
+    // tmp_User_Body.innerHTML = tr3;
+
+
+    if (!tmpProj_d) {
+        tmpProj_d = Open_Datatable("tmp_Proj_d_Element", proj_d, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_proj_d"); },
+                },
+                // {
+                //     // زر الشجرة
+                //     className: "treegrid-control forChild ",
+                //     // width: "20%",
+
+                //     data: function (item) {
+                //         if (item.children != null && item.children.length > 0) {
+                //             return '<img class="tree_button" src="/img/plus.png">';
+                //         }
+                //         return "";
+                //     },
+                // },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                }
+            ]);
+    }
+    // var tr4 = "";
+    // for (const [key, w] of Object.entries(proj_d)) {
+    //     var chk5 = "unchecked";
+    //     tr4 += ` <tr>
+    //                 <td><input class="tmp_proj_d" type="checkbox" ${chk5}  data-id="${w.id}"   onclick=""> </td>
+    //                 <td>
+    //                     ${w.name}
+    //                 </td>
+    //                  <td>
+    //                  </td>
+    //             </tr>`;
+    // }
+
+    // tmp_Proj_d_Body.innerHTML = tr4;
+    //setCheckAll();
+    //setCheckAll_out();
+
+    // شاشة العرض
+    screen = document.getElementById("MyTmpAction");
+    MyModal = new bootstrap.Modal(screen);
+
+    tr_Event_Click();
+
+    MyModal.show();
+
+}
+
+//#endregion  حفظ البيانات-----------------------------------------------------------
