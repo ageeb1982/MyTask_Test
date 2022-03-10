@@ -49,14 +49,18 @@ class Task_List {
 
 //مهمة واحدة
 class One_Task {
-    constructor(id, site, myuser, proj_d) {
+    constructor(id, site, myuser, proj_d, percent, descrp, emp_note) {
+        if (!id) id = GetNewId();
+        if (typeof (percent) != "number") percent = 0;
+        if (!descrp) descrp = "";
+        if (!emp_note) emp_note = "";
         this.id = id;
         this.site = site;
         this.myuser = myuser;
         this.proj_d = proj_d;
-        this.percent = 0;
-        this.descrp = "";
-        this.emp_note = "";
+        this.percent = percent;
+        this.descrp = descrp;
+        this.emp_note = emp_note;
     }
 }
 
@@ -401,6 +405,16 @@ var myuser = [
     new Itemx(2, "عمر حمدان"),
     new Itemx(3, "عبدالرحمن المهندس"),
     new Itemx(4, "كمال صالح"),
+    new Itemx(5, "احمد علي"),
+    new Itemx(6, "بدر العامري"),
+    new Itemx(7, "منصور العوارضي"),
+    new Itemx(8, "عمار حسن"),
+    new Itemx(9, "حذيفة احمد"),
+    new Itemx(10, "ايمن سيد احمد"),
+    new Itemx(11, "حمود عادل"),
+
+
+
 ];
 
 
@@ -1055,6 +1069,44 @@ function GetUsers_Name(usrs_ids) {
     } catch { }
     return result;
 }
+
+function GetUser_Name_From_OneTask(id) {
+
+    var result = "---";
+    try {
+        if (id) {
+            console.log("fromOneTask", id);
+        }
+
+        var name = myuser.find(w => w.id == id.myuser);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
+function GetUsers_Name_From_OneTask(usrs_ids) {
+    var result = "---";
+    try {
+        if (usrs_ids.length != 0) {
+            console.log("UserId", usrs_ids);
+        }
+        for (const [key, id] of Object.entries(usrs_ids)) {
+            if (result == "---") { result = ""; }
+            var u = GetUser_Name_From_OneTask(id);
+            if (u) {
+                if (u != "---") {
+                    if (result != "") { result += " , "; }
+                    result += u.substr(0, 8);
+                }
+            }
+        }
+    } catch { }
+    return result;
+}
+
+
+
+
+
 function GetDuration(duration) {
     if (!duration) { duration = 0; }
     return duration + " يوم";
@@ -1067,7 +1119,7 @@ function Get_start_end_date(row) {
 function GetProj_d_Name(id) {
     var result = "---";
     try {
-        var name = proj_d.find(w => w.id == id);
+        var name = proj_d.find(w => w.id == id.proj_d);
         if (name) { result = name.name; }
     } catch { }
     return result;
@@ -1082,7 +1134,7 @@ function GetProj_ds_Name(proj_d_ids) {
             if (u) {
                 if (u != "---") {
                     if (result != "") { result += " , "; }
-                    result += u.name.substr(0, 8);
+                    result += u.substr(0, 8);
                 }
             }
         }
@@ -1093,7 +1145,7 @@ function GetProj_ds_Name(proj_d_ids) {
 function GetSite_Name(id) {
     var result = "---";
     try {
-        var name = sites.find(w => w.id == id);
+        var name = sites.find(w => w.id == id.site);
         if (name) { result = name.name; }
     } catch { }
     return result;
@@ -1108,7 +1160,7 @@ function GetSites_Name(sites_ids) {
             if (u) {
                 if (u != "---") {
                     if (result != "") { result += " , "; }
-                    result += u.name.substr(0, 8);
+                    result += u.substr(0, 8);
                 }
             }
         }
@@ -1153,10 +1205,63 @@ function GetProc_Type(id) {
 
 
 //#region   Select Section
+show_proj_d = "show_proj_d";
+show_site = "show_site";
+show_user = "show_user";
 
 
+function Show_All() {
+    Select_All("", false);
+    var cmdConfirm = document.querySelector(".cmdConfirm");
+    var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
+    var dt_tmp_site = document.querySelector(".dt_tmp_site");
+    var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    cmdConfirm.classList.remove("visually-hidden");
+    dt_tmp_proj_d.classList.remove("visually-hidden");
+    dt_tmp_site.classList.remove("visually-hidden");
+    dt_tmp_user.classList.remove("visually-hidden");
 
-function hide_All() {
+    //
+
+    dt_tmp_proj_d.classList.remove("col-md-12");
+    dt_tmp_site.classList.remove("col-md-12");
+    dt_tmp_user.classList.remove("col-md-12");
+    dt_tmp_proj_d.classList.add("col-md-4");
+    dt_tmp_site.classList.add("col-md-4");
+    dt_tmp_user.classList.add("col-md-4");
+
+
+}
+function show_hide_One(show_type_Only, IsShow) {
+    Select_All("", false);
+    var cmdConfirm = document.querySelector(".cmdConfirm");
+
+    var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
+    var dt_tmp_site = document.querySelector(".dt_tmp_site");
+    var dt_tmp_user = document.querySelector(".dt_tmp_user");
+
+    if (IsShow) {
+        hide_All();
+        if (show_type_Only == show_proj_d) { dt_tmp_proj_d.classList.remove("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-12"); }
+        if (show_type_Only == show_site) { dt_tmp_site.classList.remove("visually-hidden"); dt_tmp_site.classList.add("col-md-12"); }
+        if (show_type_Only == show_user) { dt_tmp_user.classList.remove("visually-hidden"); dt_tmp_user.classList.add("col-md-12"); }
+    }
+    else {
+        Show_All();
+        if (show_type_Only == show_proj_d) { dt_tmp_proj_d.classList.add("visually-hidden"); dt_tmp_site.classList.add("col-md-6"); dt_tmp_user.classList.add("col-md-6"); }
+        if (show_type_Only == show_site) { dt_tmp_site.classList.add("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-6"); dt_tmp_user.classList.add("col-md-6"); }
+        if (show_type_Only == show_user) { dt_tmp_user.classList.add("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-6"); dt_tmp_site.classList.add("col-md-6"); }
+
+    }
+    cmdConfirm.classList.remove("visually-hidden");
+
+
+}
+
+function hide_All(e) {
+    Select_All("", false);
+    //console.log(e);
+    if (e) { if (e.dataset.cmd_Name != "cmdConfirm") return; }
     var cmdConfirm = document.querySelector(".cmdConfirm");
     cmdConfirm.classList.add("visually-hidden");
     var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
@@ -1165,11 +1270,17 @@ function hide_All() {
     dt_tmp_proj_d.classList.add("visually-hidden");
     dt_tmp_site.classList.add("visually-hidden");
     dt_tmp_user.classList.add("visually-hidden");
+
+    dt_tmp_proj_d.classList.remove("col-md-12");
+    dt_tmp_site.classList.remove("col-md-12");
+    dt_tmp_user.classList.remove("col-md-12");
+    dt_tmp_proj_d.classList.remove("col-md-4");
+    dt_tmp_site.classList.remove("col-md-4");
+    dt_tmp_user.classList.remove("col-md-4");
 }
 
-// تأكيد إختيار البنود والموظفين والمواقع
-function Confirm(e) {
-    // تغيير مدير الإجراء
+// تغيير مدير الإجراء
+function Confirm_changeManager(e) {
     if (oper_type == oper_changeManger) {
         var myUser_Select = document.querySelectorAll('.tmp_user:checked');
         if (myUser_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر موظف", "خطأ لا يمكن اتمام العملية"); return; }
@@ -1182,57 +1293,356 @@ function Confirm(e) {
             }
         }
     }
-    // الموظفيين الإداريين
-    else if (oper_type == oper_emps_mang) {
-
-    }
-
-    // تغيير مدير الموقع
-    else if (oper_type == oper_changeSiteManger) {
-
-    }
-    //المسولون بالتنفيذ
-    else if (oper_type == oper_changeSiteEmps) {
-
-    }
-
-    hide_All();
-
+    hide_All(e);
+    ReLoad_tmpAllSelection();
 }
-//تغيير المدير
-function changeManger(e) {
-    oper_type = oper_changeManger;
-    oper_Id = e.target.parentNode.dataset.row_id;
 
-    //ToDo: تغيير المدير
-    اكمال تغيير المدير;
-    هنا;
-    var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
-    var dt_tmp_site = document.querySelector(".dt_tmp_site");
-    var dt_tmp_user = document.querySelector(".dt_tmp_user");
-    var cmdConfirm = document.querySelector(".cmdConfirm");
-    cmdConfirm.classList.remove("visually-hidden");
-    dt_tmp_user.classList.remove("visually-hidden");
-    //
-    console.log("changeManger", e);
+// تغيير مدير الموقع
+function Confirm_changeSiteManger(e) {
+    if (oper_type == oper_changeSiteManger) {
+        var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+        if (myUser_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر موظف", "خطأ لا يمكن اتمام العملية"); return; }
+        if (myUser_Select.length > 1) { msgbox_tmp("لا بد من اختيار شخص واحد فقط", "خطأ لا يمكن اتمام العملية"); return; }
+        var myUser_id = myUser_Select[0].dataset.row_id;
+        if (oper_Id && myUser_id) {
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                current.site_mang = myUser_id;
+            }
+        }
+    }
+    hide_All(e);
+    ReLoad_tmpAllSelection();
 }
 
 // الموظفيين الإداريين
-function change_emps_mang(e) {
-    oper_type = oper_emps_mang;
-    console.log("change_emps_mang", e);
+function Confirm_changeEmps_Mang(e) {
+    if (oper_type == oper_emps_mang) {
+        var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+        if (myUser_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر موظف", "خطأ لا يمكن اتمام العملية"); return; }
+        // if (myUser_Select.length > 1) { msgbox_tmp("لا بد من اختيار شخص واحد فقط", "خطأ لا يمكن اتمام العملية"); return; }
+        if (oper_Id) {
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (save_Emps_mang(current) == 0) return;
+        }
+    }
+    hide_All(e);
+    ReLoad_tmpAllSelection();
+}
+save_Change_Emp_Mang = function (e) { };
+//المسولون بالتنفيذ
+function Confirm_changeSiteEmps(e) {
+
+    if (oper_type == oper_changeSiteEmps) {
+        var myUser_Select = document.querySelectorAll('.tmp_user:checked');
+        if (myUser_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر موظف", "خطأ لا يمكن اتمام العملية"); return; }
+        // if (myUser_Select.length > 1) { msgbox_tmp("لا بد من اختيار شخص واحد فقط", "خطأ لا يمكن اتمام العملية"); return; }
+        if (oper_Id) {
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (save_SiteEmps(current) == 0) return;
+        }
+    }
+    hide_All(e);
+    ReLoad_tmpAllSelection();
+}
+
+save_SiteEmps = function (e) {
+    if (!e) { msgbox_tmp("يوجد خطأ حاول تحديث الصفحة وحاول مرة اخرى", "خطأ لا يمكن اتمام العملية"); return 0; }
+    var Items = Select_Item_To_Array();
+    e.site_emps = Items;
+    return 1;
+
+};
+
+save_Emps_mang = function (e) {
+    if (!e) { msgbox_tmp("يوجد خطأ حاول تحديث الصفحة وحاول مرة اخرى", "خطأ لا يمكن اتمام العملية"); return 0; }
+    var Items = Select_Item_To_Array();
+    e.emps_mang = Items;
+    return 1;
+};
+
+
+
+
+
+
+Select_Item_To_Array = function (e) {
+    var result = [];
+    var check_user = document.querySelectorAll('.tmp_user:checked');
+    var check_site = document.querySelectorAll('.tmp_site:checked');
+    var check_proj_d = document.querySelectorAll('.tmp_proj_d:checked');
+    // console.log("check_user", check_user.length);
+    // console.log("check_site", check_site.length);
+    // console.log("check_proj_d", check_proj_d.length);
+    var SNQ = 0;
+    var IsSiteNotEmpty = false;
+    //if (!check_site) {
+    if (check_site.length != 0) { IsSiteNotEmpty = true; }
+    //}
+    var IsProj_dNotEmpty = false;
+    //if (!check_proj_d) { 
+    if (check_proj_d.length != 0) { IsProj_dNotEmpty = true; }
+    // }
+    var IsUserNotEmpty = false;
+    //if (!check_user) {
+    if (check_user.length != 0) { IsUserNotEmpty = true; }
+    //}
+    if (IsUserNotEmpty) {
+        check_user.forEach(userqq => {
+            //console.log(userqq);
+            if (IsSiteNotEmpty) {
+                check_site.forEach(siteqq => {
+                    //  console.log(userqq, "-", siteqq);
+                    if (IsProj_dNotEmpty) {
+                        check_proj_d.forEach(proj_dqq => {
+
+                            var userIdz = 0;
+                            var siteIdz = 0;
+                            var proj_dIdz = 0;
+
+                            if (userqq) { if (userqq.dataset) { if (userqq.dataset.row_id) { userIdz = userqq.dataset.row_id; } } }
+                            if (siteqq) { if (siteqq.dataset) { if (siteqq.dataset.row_id) { siteIdz = siteqq.dataset.row_id; } } }
+                            if (proj_dqq) { if (proj_dqq.dataset) { if (proj_dqq.dataset.row_id) { proj_dIdz = proj_dqq.dataset.row_id; } } }
+                            //console.log(`SN: ${++SNQ} userId: `, userIdz, " - site: ", siteIdz, " - proj_d: ", proj_dIdz);
+                            result.push(new One_Task(GetNewId(), siteIdz, userIdz, proj_dIdz));
+
+                        });
+                    }
+                    else {
+                        var userIdz = 0;
+                        var siteIdz = 0;
+                        var proj_dIdz = 0;
+                        if (userqq) { if (userqq.dataset) { if (userqq.dataset.row_id) { userIdz = userqq.dataset.row_id; } } }
+                        if (siteqq) { if (siteqq.dataset) { if (siteqq.dataset.row_id) { siteIdz = siteqq.dataset.row_id; } } }
+                        // console.log(`SN: ${++SNQ} userId: `, userIdz, " - site: ", siteIdz, " - proj_d: ", proj_dIdz);
+
+
+                        result.push(new One_Task(GetNewId(), siteIdz, userIdz, proj_dIdz));
+                    }
+                });
+            }
+            else {
+                if (IsProj_dNotEmpty) {
+                    check_proj_d.forEach(proj_dqq => {
+                        var userIdz = 0;
+                        var siteIdz = 0;
+                        var proj_dIdz = 0;
+
+                        if (userqq) { if (userqq.dataset) { if (userqq.dataset.row_id) { userIdz = userqq.dataset.row_id; } } }
+                        // if (siteqq) { if (siteqq.dataset) { if (siteqq.dataset.row_id) { siteIdz = siteqq.dataset.row_id; } } }
+                        if (proj_dqq) { if (proj_dqq.dataset) { if (proj_dqq.dataset.row_id) { proj_dIdz = proj_dqq.dataset.row_id; } } }
+                        // console.log(`SN: ${++SNQ} userId: `, userIdz, " - site: ", siteIdz, " - proj_d: ", proj_dIdz);
+
+
+                        result.push(new One_Task(GetNewId(), siteIdz, userIdz, proj_dIdz));
+
+                    });
+                }
+                else {
+                    var userIdz = 0;
+                    var siteIdz = 0;
+                    var proj_dIdz = 0;
+
+                    if (userqq) { if (userqq.dataset) { if (userqq.dataset.row_id) { userIdz = userqq.dataset.row_id; } } }
+                    // if (siteqq) { if (siteqq.dataset) { if (siteqq.dataset.row_id) { siteIdz = siteqq.dataset.row_id; } } }
+                    // if (proj_dqq) { if (proj_dqq.dataset) { if (proj_dqq.dataset.row_id) { proj_dIdz = proj_dqq.dataset.row_id; } } }
+                    // console.log(`SN: ${++SNQ} userId: `, userIdz, " - site: ", siteIdz, " - proj_d: ", proj_dIdz);
+
+
+                    result.push(new One_Task(GetNewId(), siteIdz, userIdz, proj_dIdz));
+                }
+            }
+        });
+    }
+
+    return result;
+
+
+
+};
+
+
+
+
+
+
+// تأكيد إختيار البنود والموظفين والمواقع
+function Confirm(e) {
+    // تغيير مدير الإجراء
+    if (oper_type == oper_changeManger) { Confirm_changeManager(e); }
+
+    // الموظفيين الإداريين
+    else if (oper_type == oper_emps_mang) { Confirm_changeEmps_Mang(e); }
+
+    // تغيير مدير الموقع
+    else if (oper_type == oper_changeSiteManger) { Confirm_changeSiteManger(e); }
+    //المسولون بالتنفيذ
+    else if (oper_type == oper_changeSiteEmps) { Confirm_changeSiteEmps(e); }
+
+
+}
+var select_myUser = "select_myUser";
+var select_proj_d = "select_proj_d";
+var select_Task = "select_Task";
+var select_site = "select_site";
+
+function Select_All(Exception_Table, IsSelect) {
+    if (typeof isSelect != "boolean") { IsSelect = true; }
+    var oe = "";
+    oe.checked = IsSelect;
+    var o2 = "";
+    o2.checked = !IsSelect;
+
+
+    // زر اختيار كل القوالب أو الإلغاء
+    checkAll_tmp_User(oe);
+
+    // زر إختيار كل البنود أو الإلغاء
+    checkAll_tmp_Proj_d(oe);
+
+    // زر اختيار أو الغاء المستخدمين
+    check_tmp_All_Task(oe);
+
+
+    // زر إختيار المواقع أو الإلغاء
+    checkAll_tmp_Location(oe);
+
+    // var checkAll_tmp_Proj_dqq = document.querySelector(".checkAll_tmp_Proj_d");
+    // var checkAll_tmp_Locationqq = document.querySelector(".checkAll_tmp_Location");
+    // var checkAll_tmp_Userqq = document.querySelector(".checkAll_tmp_User");
+    // checkAll_tmp_Proj_dqq.checked = IsSelect;
+    // checkAll_tmp_Locationqq.checked = IsSelect;
+    // checkAll_tmp_Userqq.checked = IsSelect;
+
+    // زر اختيار كل القوالب أو الإلغاء
+    if (Exception_Table == select_myUser) { checkAll_tmp_User(o2); } //checkAll_tmp_Userqq.checked=!IsSelect; }
+
+    // زر إختيار كل البنود أو الإلغاء
+    if (Exception_Table == select_proj_d) { checkAll_tmp_Proj_d(o2); }// checkAll_tmp_Proj_dqq.checked=!IsSelect; }
+
+    // زر اختيار أو الغاء المستخدمين
+    // if (Exception_Table == select_Task) check_tmp_All_Task(o2);
+
+
+    // زر إختيار المواقع أو الإلغاء
+    if (Exception_Table == select_site) { checkAll_tmp_Location(o2); }// checkAll_tmp_Locationqq.checked=!IsSelect; }
+
+}
+
+//تغيير المدير
+function changeManger(e) {
+    oper_type = oper_changeManger;
+    oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
+
+    show_hide_One(show_user, true);
+    //إحضار البيانات
+    if (oper_Id) {
+        try {
+            var myUser_Select = document.querySelectorAll('.tmp_user');
+            myUser_Select.forEach(e => e.checked = false);
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                if (current.mang_name) {
+                    myUser_Select.forEach(ee => {
+                        ee.dataset.row_id == current.mang_name ? ee.checked = true : ee.checked = false;
+                        //console.log(ee.querySelector('[data-row_id]'));
+                        //ee.querySelector('[data-row_id]').dataset.row_id == current.mang_name ? ee.checked = true : ee.checked = false;
+                    });
+                }
+            }
+        } catch (z) { console.log("err=>", z); }
+    }
+    ReLoad_tmpAllSelection();
+
 }
 
 // مدير الموقع
 function change_site_mang(e) {
     oper_type = oper_changeSiteManger;
-    console.log("change_site_mang", e);
+    oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
+
+    show_hide_One(show_user, true);
+
+    // var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
+    // var dt_tmp_site = document.querySelector(".dt_tmp_site");
+    // var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    // var cmdConfirm = document.querySelector(".cmdConfirm");
+    // cmdConfirm.classList.remove("visually-hidden");
+    // dt_tmp_user.classList.remove("visually-hidden");
+
+    //إحضار البيانات
+    if (oper_Id) {
+        try {
+            var myUser_Select = document.querySelectorAll('.tmp_user');
+            myUser_Select.forEach(e => e.checked = false);
+            // console.log(myUser_Select);
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                if (current.site_mang) {
+                    myUser_Select.forEach(ee => {
+                        ee.dataset.row_id == current.site_mang ? ee.checked = true : ee.checked = false;
+                        //console.log(ee.querySelector('[data-row_id]'));
+                        //ee.querySelector('[data-row_id]').dataset.row_id == current.mang_name ? ee.checked = true : ee.checked = false;
+                    });
+                }
+            }
+        } catch (z) { console.log("err=>", z); }
+    }
+    ReLoad_tmpAllSelection();
+
+    //  console.log("change_site_mang", e);
 }
+
+// الموظفيين الإداريين
+function change_emps_mang(e) {
+    oper_type = oper_emps_mang;
+    oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
+    Show_All();
+
+
+    //إحضار البيانات
+    if (oper_Id) {
+        try {
+            var myUser_Select = document.querySelectorAll('.tmp_user');
+            myUser_Select.forEach(e => e.checked = false);
+            // console.log(myUser_Select);
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                // if (current.site_mang) {
+                //     loadSite_mang(current.site_mang);
+                // }
+            }
+        } catch (z) { console.log("err=>", z); }
+    }
+    ReLoad_tmpAllSelection();
+
+
+}
+
 
 // المسؤولون بالتنفيذ
 function change_site_emps(e) {
     oper_type = oper_changeSiteEmps;
-    console.log("change_site_emps", e);
+    oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
+    Show_All();
+
+
+    //إحضار البيانات
+    if (oper_Id) {
+        try {
+            var myUser_Select = document.querySelectorAll('.tmp_user');
+            myUser_Select.forEach(e => e.checked = false);
+            // console.log(myUser_Select);
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                // if (current.site_mang) {
+                //     loadSite_mang(current.site_mang);
+                // }
+            }
+        } catch (z) { console.log("err=>", z); }
+    }
+    ReLoad_tmpAllSelection();
+
 }
 
 
@@ -1271,8 +1681,8 @@ var oper_all = "all";
 var oper_one = "one";
 var oper_changeManger = "changeManger";
 var oper_changeSiteManger = "changeSiteManger";
+var oper_changeSiteEmps = "oper_changeSiteEmps";
 var oper_emps_mang = "emps_mang";
-var oper_changeSiteManger = "changeSiteManger";
 var oper_Id = "";
 
 
@@ -1597,7 +2007,7 @@ function tr_Event_Click() {
                 //console.log(e.target.parentNode);
                 var eel = e.target.parentNode.querySelector('[type="checkbox"]');
                 if (eel != e.target) {
-                    console.log(e.target);
+                    // console.log(e.target);
                     if (!e.target.classList.contains("tree_button")) {
                         if (!e.target.classList.contains("treegrid-control-open")) {
                             if (!e.target.classList.contains("treegrid-control")) {
@@ -1651,6 +2061,11 @@ function checkAll_tmp_Location(oe) {
     }
     );
 }
+
+
+
+
+
 var tmpTable;
 var tmpAllSelection;
 
@@ -1997,10 +2412,20 @@ function setCheckAll() {
         document.querySelectorAll('.groupA').length ==
         document.querySelectorAll('.groupA:checked').length;
 }
-function setCheckAll_out() {
-    document.querySelector('input.checkAll_out').checked =
-        document.querySelectorAll('.groupB').length ==
-        document.querySelectorAll('.groupB:checked').length;
+function setCheckAll_out(e) {
+    try {
+        var classname = e.className;
+        var allz = "";
+
+        if (classname == "tmp_user") { allz = "checkAll_tmp_User"; }
+        if (classname == "tmp_site") { allz = "checkAll_tmp_Location"; }
+        if (classname == "tmp_proj_d") { allz = "checkAll_tmp_Proj_d"; }
+        if (classname == "tmp_task") { allz = "check_tmp_All_Task"; }
+
+        document.querySelector(`input.${allz}`).checked =
+            document.querySelectorAll(`.${classname}`).length ==
+            document.querySelectorAll(`.${classname}:checked`).length;
+    } catch { }
 }
 
 document.onload = function () {
@@ -2157,9 +2582,15 @@ function cmdSavetmp_Click(e) {
             // console.log("name=", name);
             var childs = w.children;
             // console.log("childs=", childs);
-            var www = new Task(id, name, 0, 0, 0, 0, 0, 0, "", childs);
+            var www = new Task(id, name, 0, 0, 0, 0, 0, 0, "", Copy_Object(childs));
             // console.log("www=", www);
             // console.log("Mydb_AllSelection_tmp--1=", Mydb_Table);
+            www.emps_mang = Copy_Object(w.emps_mang);
+            www.site_emps = Copy_Object(w.site_emps);
+            www.site_mang = Copy_Object(w.site_mang);
+            www.mang_name = Copy_Object(w.mang_name);
+
+
             Mydb_Table.push(www);
 
             // console.log("Mydb_AllSelection_tmp--2=", Mydb_Table);
@@ -2168,6 +2599,7 @@ function cmdSavetmp_Click(e) {
     } catch { }
 
     change_Serial_No(Mydb_Table);
+    RemoveAll_Tmp_Select();
     Reload_dataTable();
 
 
@@ -2183,6 +2615,11 @@ function cmdSavetmp_Click(e) {
 
     MyModal.hide();
 }
+
+function RemoveAll_Tmp_Select() {
+    Mydb_AllSelection_tmp = [];
+}
+
 function Reload_dataTable() {
     if (!dataTable) {
         dataTable = Open_Datatable("MyTable", Mydb_Table, true, "65vh", [
@@ -2232,7 +2669,7 @@ function Reload_dataTable() {
                 // الموظفيين الإداريين
                 data: "emps_mang",
                 render: function (data, type, row) {
-                    return GetUsers_Name(data);
+                    return GetUsers_Name_From_OneTask(data);
                 },
             },
             {
@@ -2260,7 +2697,7 @@ function Reload_dataTable() {
                 // المسؤولون بالتنفيذ
                 data: "site_emps",
                 render: function (data, type, row) {
-                    return GetUsers_Name(data);
+                    return GetUsers_Name_From_OneTask(data);
                 },
             },
 
@@ -2341,6 +2778,8 @@ function Reload_dataTable() {
     }
     tr_Event_Click();
 }
+
+// تحميل البيانات المؤقته
 function ReLoad_tmpAllSelection() {
     if (!tmpAllSelection) {
         tmpAllSelection = Open_Datatable("tmp_allSelection_Element", Mydb_AllSelection_tmp, false, "39vh",
@@ -2384,7 +2823,7 @@ function ReLoad_tmpAllSelection() {
                     // الموظفيين الإداريين
                     data: "emps_mang",
                     render: function (data, type, row) {
-                        return `<button onclick="change_emps_mang(this)">***</button> ` + GetUsers_Name(data);
+                        return `<button onclick="change_emps_mang(this)">***</button> ` + GetUsers_Name_From_OneTask(data);
                     },
                 },
 
@@ -2399,7 +2838,7 @@ function ReLoad_tmpAllSelection() {
                     // المسؤولون بالتنفيذ
                     data: "site_emps",
                     render: function (data, type, row) {
-                        return `<button onclick="change_site_emps(this)">***</button> ` + GetUsers_Name(data);
+                        return `<button onclick="change_site_emps(this)">***</button> ` + GetUsers_Name_From_OneTask(data);
                     },
                 },
 
@@ -2425,13 +2864,8 @@ function ReLoad_tmpAllSelection() {
     return tmpAllSelection;
 }
 
-var tmpTree;
-//لعرض شاشة الإضافة
-function showAdd_Tmp() {
-    // زر الحفظ
-    cmdSavetmp = document.getElementById("cmdSavetmp");
-    console.log("tmptabl");
-    //الجدول داخل صفحة الhtml
+//تحميل بيانات القوالب
+function ReLoad_tmp_Task_Element() {
     if (!tmpTable) {
         tmpTable = Open_Datatable("tmp_Task_Element", All_Temp, false, "39vh",
             [
@@ -2464,26 +2898,28 @@ function showAdd_Tmp() {
                 }
             ]);
     }
-    console.log("reload1");
+    else {
+        tmpTable.clear();
+        tmpTable.rows.add(All_Temp);
+        tmpTable.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
+    // }
+    tr_Event_Click();
+    return tmpTable;
+}
 
-    ReLoad_tmpAllSelection();
-    console.log("reload2");
-
-
-    // tbody داخل شاشة العرض
-    var tmpTask_Body = document.getElementById("tmpTask_Body");
-
-    // tbody الموقع
-    var tmp_Location_Body = document.getElementById("tmp_Location_Body");
-
-    // tbody البند
-    var tmp_Proj_d_Body = document.getElementById("tmp_Proj_d_Body");
-
-    // tbody الموظف
-    var tmp_User_Body = document.getElementById("tmp_User_Body");
-
-
-
+// تحميل بينات المواقع
+function Reload_tmp_Site_Element() {
 
     if (!tmpSite) {
         tmpSite = Open_Datatable("tmp_Site_Element", sites, false, "39vh",
@@ -2517,22 +2953,26 @@ function showAdd_Tmp() {
                 }
             ]);
     }
-    // var tr2 = "";
-    // for (const [key, w] of Object.entries(sites)) {
-    //     var chk = "unchecked";
-    //     tr2 += ` <tr>
-    //                 <td><input class="tmp_site" type="checkbox" ${chk}  data-id="${w.id}"   onclick=""> </td>
-    //                 <td>
-    //                     ${w.name}
-    //                 </td>
-    //                  <td>
-    //                     <!-- <button>عرض المواقع</button> -->
-    //                 </td>
-    //             </tr>`;
+    else {
+        tmpSite.clear();
+        tmpSite.rows.add(sites);
+        tmpSite.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
     // }
-
-    // tmp_Location_Body.innerHTML = tr2;
-
+    tr_Event_Click();
+    return tmpSite;
+}
+function ReLoad_tmp_User_Element() {
     if (!tmpUser) {
         tmpUser = Open_Datatable("tmp_User_Element", myuser, false, "39vh",
             [
@@ -2565,23 +3005,29 @@ function showAdd_Tmp() {
                 }
             ]);
     }
-
-    // var tr3 = "";
-    // for (const [key, w] of Object.entries(myuser)) {
-    //     var chk4 = "unchecked";
-    //     tr3 += ` <tr>
-    //                 <td><input class="tmp_user" type="checkbox" ${chk4}  data-id="${w.id}"   onclick=""> </td>
-    //                 <td>
-    //                     ${w.name}
-    //                 </td>
-    //                  <td>
-    //                     <!-- <button>عرض الأشخاص</button> -->
-    //                 </td>
-    //             </tr>`;
+    else {
+        tmpUser.clear();
+        tmpUser.rows.add(myuser);
+        tmpUser.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
     // }
+    tr_Event_Click();
+    return tmpUser;
 
-    // tmp_User_Body.innerHTML = tr3;
+}
 
+
+function ReLoad_tmp_Proj_d_Element() {
 
     if (!tmpProj_d) {
         tmpProj_d = Open_Datatable("tmp_Proj_d_Element", proj_d, false, "39vh",
@@ -2615,28 +3061,42 @@ function showAdd_Tmp() {
                 }
             ]);
     }
-    // var tr4 = "";
-    // for (const [key, w] of Object.entries(proj_d)) {
-    //     var chk5 = "unchecked";
-    //     tr4 += ` <tr>
-    //                 <td><input class="tmp_proj_d" type="checkbox" ${chk5}  data-id="${w.id}"   onclick=""> </td>
-    //                 <td>
-    //                     ${w.name}
-    //                 </td>
-    //                  <td>
-    //                  </td>
-    //             </tr>`;
+    else {
+        tmpProj_d.clear();
+        tmpProj_d.rows.add(proj_d);
+        tmpProj_d.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
     // }
+    tr_Event_Click();
+    return tmpProj_d;
+}
 
-    // tmp_Proj_d_Body.innerHTML = tr4;
-    //setCheckAll();
-    //setCheckAll_out();
 
+
+
+var tmpTree;
+//لعرض شاشة الإضافة
+function showAdd_Tmp() {
+    // زر الحفظ
+    cmdSavetmp = document.getElementById("cmdSavetmp");
+    ReLoad_tmp_Task_Element();
+    ReLoad_tmpAllSelection();
+    Reload_tmp_Site_Element();
+    ReLoad_tmp_User_Element();
+    ReLoad_tmp_Proj_d_Element();
     // شاشة العرض
     screen = document.getElementById("MyTmpAction");
     MyModal = new bootstrap.Modal(screen);
-
-    tr_Event_Click();
 
     MyModal.show();
 

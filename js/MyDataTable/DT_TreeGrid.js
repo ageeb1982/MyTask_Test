@@ -134,63 +134,67 @@ var current_td;
                 td.html('').append(icon);
 
 
-                if (data.children && data.children.length) {
-                    var subRows = treeGridRows[parentTrId] = [];
+                if (data.children) {
+                    if (data.children.length) {
+                        var subRows = treeGridRows[parentTrId] = [];
 
-                    var prevRow = row.node();
-                    // var SubChild = row.find(".subChild");                    // console.log("row", row);
-
-
-                    var myColor = getColor();
-                    data.children.forEach(function (item) {
-                        parentTr.classList.remove('odd');
-                        parentTr.classList.remove('even');
-                        parentTr.style.background = myColor;
-                        //console.log(parentTr);
-                        var newRow = dataTable.row.add(item);
-                        var node = newRow.node();
-                        var treegridTd = $(node).find('.treegrid-control');
-                        try {
-                            //تغيير لون خلفية الإبن
-
-                            node.querySelectorAll('.forChild')
-                                .forEach(w => {
+                        var prevRow = row.node();
+                        // var SubChild = row.find(".subChild");                    // console.log("row", row);
 
 
+                        var myColor = getColor();
+                        data.children.forEach(function (item) {
+                            parentTr.classList.remove('odd');
+                            parentTr.classList.remove('even');
+                            parentTr.style.background = myColor;
+                            //console.log(parentTr);
+                            var newRow = dataTable.row.add(item);
+                            var node = newRow.node();
+                            var treegridTd = $(node).find('.treegrid-control');
+                            try {
+                                //تغيير لون خلفية الإبن
+
+                                node.querySelectorAll('.forChild')
+                                    .forEach(w => {
 
 
-                                    //var P_td = row.find(".subChild");
-                                    //if (P_td) { P_td.style.background = myColor; }
 
-                                    // var classL = Object.entries(tds.classList).map(([k, v]) => v);
-                                    // console.log(classL);
 
-                                    // var Is0 = classL.includes("myChild");
-                                    // var Is1 = classL.includes("myChild1");
+                                        //var P_td = row.find(".subChild");
+                                        //if (P_td) { P_td.style.background = myColor; }
 
-                                    // if (Is0) { w.classList.remove("myChild"); w.classList.add("myChild1"); }
-                                    // else
-                                    //     if (Is1) { w.classList.remove("myChild1"); w.classList.add("myChild"); }
-                                    //     else { w.classList.add("myChild"); }
-                                    w.style.background = myColor;
+                                        // var classL = Object.entries(tds.classList).map(([k, v]) => v);
+                                        // console.log(classL);
 
-                                });
-                        } catch (ee) { console.log(ee); }
-                        var left = (layer + 1) * sLeft;
-                        $(node).attr('parent-index', index);
-                        treegridTd.find('span').css('marginLeft', left + 'px');
-                        treegridTd.next().css('paddingLeft', paddingLeft + left + 'px');
-                        $(node).insertAfter(prevRow);
-                        prevRow = node;
-                        subRows.push(node);
-                    });
+                                        // var Is0 = classL.includes("myChild");
+                                        // var Is1 = classL.includes("myChild1");
 
-                    resetEvenOddClass(dataTable);
-                    select && setTimeout(function () {
-                        dataTable.rows(selectedIndexes).select();
-                    }, 0);
+                                        // if (Is0) { w.classList.remove("myChild"); w.classList.add("myChild1"); }
+                                        // else
+                                        //     if (Is1) { w.classList.remove("myChild1"); w.classList.add("myChild"); }
+                                        //     else { w.classList.add("myChild"); }
+                                        w.style.background = myColor;
+
+                                    });
+                            } catch (ee) { console.log(ee); }
+                            var left = (layer + 1) * sLeft;
+                            $(node).attr('parent-index', index);
+                            treegridTd.find('span').css('marginLeft', left + 'px');
+                            treegridTd.next().css('paddingLeft', paddingLeft + left + 'px');
+                            $(node).insertAfter(prevRow);
+                            prevRow = node;
+                            subRows.push(node);
+                        });
+
+                        resetEvenOddClass(dataTable);
+                        select && setTimeout(function () {
+                            dataTable.rows(selectedIndexes).select();
+                        }, 0);
+                    }
                 }
-                try { tr_Event_Click(); } catch (e) { }
+                try {
+                    tr_Event_Click();
+                } catch (e) { }
 
             });
             // Collapse TreeGrid
@@ -295,12 +299,13 @@ var current_td;
         },
 
         "_fnDraw": function () {
-            console.log('_fnDraw: ' + new Date().getTime());
+            //ToDo:مراجعة الأوامر الخاصة بـlog
+            //console.log('_fnDraw: ' + new Date().getTime());
             var that = this;
             this.s = $.extend(true, this.s, TreeGrid.defaults, globalInit);
             /* Draw callback function */
             if (this.s.expandAll) {
-                console.log('expandAll is True: ' + new Date().getTime());
+                //console.log('expandAll is True: ' + new Date().getTime());
                 var tds = $(dataTable.table().body()).find('td.treegrid-control');
                 tds.each(function (index, td) {
                     _expandAll(that, null, td);
@@ -416,50 +421,55 @@ var current_td;
         var index = row.index();
         var data = row.data();
 
-        if (data.children && data.children.length) {
-            //由于数据insertAfter插入问题，这里将JSON 倒序
-            data.children.reverse();
-            $(parentTr).attr('id', parentTrId);
-            // var td = $(dataTable.cell(getParentTd(tds)).node());
-            var td = $(tds);
-            var paddingLeft = parseInt(td.css('padding-left'), 10);
-            var layer = parseInt(td.find('span').css('margin-left') || 0, 10) / sLeft;
-            var icon = collapseIcon.clone();
-            icon.css('marginLeft', layer * sLeft + 'px');
-            td.removeClass('treegrid-control').addClass('treegrid-control-open');
-            td.html('').append(icon);
+        console.log("data===>", data);
+        if (data) {
+            if (data.children) {
+                if (data.children.length) {
+                    //由于数据insertAfter插入问题，这里将JSON 倒序
+                    data.children.reverse();
+                    $(parentTr).attr('id', parentTrId);
+                    // var td = $(dataTable.cell(getParentTd(tds)).node());
+                    var td = $(tds);
+                    var paddingLeft = parseInt(td.css('padding-left'), 10);
+                    var layer = parseInt(td.find('span').css('margin-left') || 0, 10) / sLeft;
+                    var icon = collapseIcon.clone();
+                    icon.css('marginLeft', layer * sLeft + 'px');
+                    td.removeClass('treegrid-control').addClass('treegrid-control-open');
+                    td.html('').append(icon);
 
-            var subRows = treeGridRows[parentTrId] = [];
-            var prevRow = row.node();
-            if (!insertTr) {
-                insertTr = prevRow;
-            }
+                    var subRows = treeGridRows[parentTrId] = [];
+                    var prevRow = row.node();
+                    if (!insertTr) {
+                        insertTr = prevRow;
+                    }
 
-            data.children.forEach(function (item) {
-                var newRow = dataTable.row.add(item);
-                var node = newRow.node();
-                var treegridTd = $(node).find('.treegrid-control');
-                var left = (layer + 1) * sLeft;
-                $(node).attr('parent-index', index);
-                treegridTd.find('span').css('marginLeft', left + 'px');
-                treegridTd.next().css('paddingLeft', paddingLeft + left + 'px');
-                // $(node).insertAfter(prevRow);
-                $(node).insertAfter(insertTr);
-                prevRow = node;
-                subRows.push(node);
-                //递归展开子集 当前插入行存在子集则递归
-                var prevRowData = dataTable.row(prevRow).data();
-                if (prevRowData.children && prevRowData.children.length) {
-                    var prevTd = $(prevRow).find('td.treegrid-control');
-                    _expandAll(treeGrid, $(node), prevTd);
+                    data.children.forEach(function (item) {
+                        var newRow = dataTable.row.add(item);
+                        var node = newRow.node();
+                        var treegridTd = $(node).find('.treegrid-control');
+                        var left = (layer + 1) * sLeft;
+                        $(node).attr('parent-index', index);
+                        treegridTd.find('span').css('marginLeft', left + 'px');
+                        treegridTd.next().css('paddingLeft', paddingLeft + left + 'px');
+                        // $(node).insertAfter(prevRow);
+                        $(node).insertAfter(insertTr);
+                        prevRow = node;
+                        subRows.push(node);
+                        //递归展开子集 当前插入行存在子集则递归
+                        var prevRowData = dataTable.row(prevRow).data();
+                        if (prevRowData.children && prevRowData.children.length) {
+                            var prevTd = $(prevRow).find('td.treegrid-control');
+                            _expandAll(treeGrid, $(node), prevTd);
+                        }
+
+                    });
+                    select && setTimeout(function () {
+                        dataTable.rows(selectedIndexes).select();
+                    }, 0);
+                    try { tr_Event_Click(); } catch (e) { }
+
                 }
-
-            });
-            select && setTimeout(function () {
-                dataTable.rows(selectedIndexes).select();
-            }, 0);
-            try { tr_Event_Click(); } catch (e) { }
-
+            }
         }
     };
 

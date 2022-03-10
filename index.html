@@ -173,82 +173,92 @@
 
                         <div class="col-6 h-50">
 
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||           بداية البنود          |||||||||||||||||||||||||||||||||||||||||||-->
+                            <div class="row">
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||           بداية البنود          |||||||||||||||||||||||||||||||||||||||||||-->
+                                <div class="dt_tmp_proj_d visually-hidden">
+                                    <div class="table-responsive w-auto">
+                                        <table id="tmp_Proj_d_Element"
+                                            class="table table-striped table-bordered table-separated display">
+                                            <thead>
+                                                <tr class="colX4">
+                                                    <th>
+                                                        <input class="checkAll_tmp_Proj_d" type="checkbox"
+                                                            onclick="checkAll_tmp_Proj_d(this)">
+                                                    </th>
+                                                    <th>
+                                                        اسم البند
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tmp_Proj_d_Body">
 
-                            <div class="table-responsive dt_tmp_proj_d visually-hidden">
-                                <table id="tmp_Proj_d_Element"
-                                    class="table table-striped table-bordered table-separated display">
-                                    <thead>
-                                        <tr class="colX4">
-                                            <th>
-                                                <input class="checkAll_tmp_Proj_d" type="checkbox"
-                                                    onclick="checkAll_tmp_Proj_d(this)">
-                                            </th>
-                                            <th>
-                                                اسم البند
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tmp_Proj_d_Body">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية البنود          |||||||||||||||||||||||||||||||||||||||||||-->
 
-                                    </tbody>
-                                </table>
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||        بداية   المواقع          |||||||||||||||||||||||||||||||||||||||||||-->
+                                <div class="dt_tmp_site visually-hidden">
+
+                                    <div class="table-responsive w-auto">
+                                        <table id="tmp_Site_Element"
+                                            class="table table-striped table-bordered table-separated display">
+                                            <thead>
+                                                <tr class="colX2">
+                                                    <th>
+                                                        <input class="checkAll_tmp_Location" type="checkbox"
+                                                            onclick="checkAll_tmp_Location(this)">
+                                                    </th>
+
+                                                    <th>
+                                                        اسم الموقع
+                                                    </th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tmp_Location_Body">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية المواقع          |||||||||||||||||||||||||||||||||||||||||||-->
+
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||           بداية المستخدمين          |||||||||||||||||||||||||||||||||||||||||||-->
+                                <div class="dt_tmp_user visually-hidden">
+
+                                    <div class="table-responsive w-auto">
+                                        <table id="tmp_User_Element"
+                                            class="table table-striped table-bordered table-separated display">
+                                            <thead>
+                                                <tr class="colX3">
+                                                    <th>
+                                                        <input class="checkAll_tmp_User" type="checkbox"
+                                                            onclick="checkAll_tmp_User(this)">
+                                                    </th>
+
+                                                    <th>
+                                                        اسم المسؤول
+                                                    </th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="tmp_User_Body">
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية المستخدمين          |||||||||||||||||||||||||||||||||||||||||||-->
                             </div>
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية البنود          |||||||||||||||||||||||||||||||||||||||||||-->
 
 
 
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||        بداية   المواقع          |||||||||||||||||||||||||||||||||||||||||||-->
 
-                            <div class="table-responsive dt_tmp_site visually-hidden">
-                                <table id="tmp_Site_Element"
-                                    class="table table-striped table-bordered table-separated display">
-                                    <thead>
-                                        <tr class="colX2">
-                                            <th>
-                                                <input class="checkAll_tmp_Location" type="checkbox"
-                                                    onclick="checkAll_tmp_Location(this)">
-                                            </th>
-
-                                            <th>
-                                                اسم الموقع
-                                            </th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tmp_Location_Body">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية المواقع          |||||||||||||||||||||||||||||||||||||||||||-->
 
                             <!-- </div>
                         <div class="col-6 h-50"> -->
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||           بداية المستخدمين          |||||||||||||||||||||||||||||||||||||||||||-->
-
-                            <div class="table-responsive dt_tmp_user visually-hidden">
-                                <table id="tmp_User_Element"
-                                    class="table table-striped table-bordered table-separated display">
-                                    <thead>
-                                        <tr class="colX3">
-                                            <th>
-                                                <input class="checkAll_tmp_User" type="checkbox"
-                                                    onclick="checkAll_tmp_User(this)">
-                                            </th>
-
-                                            <th>
-                                                اسم المسؤول
-                                            </th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody id="tmp_User_Body">
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            <!--|||||||||||||||||||||||||||||||||||||||||||||||||           نهاية المستخدمين          |||||||||||||||||||||||||||||||||||||||||||-->
 
                             <!-- </div>
                         <div class="col-6 h-50"> -->
@@ -263,11 +273,13 @@
                         <div class="col-6 btn-group ">
                             <button class="col-6 row btn btn-success" onclick="insert_Tmp_To_Select(this)">اضف القوالب
                                 المختارة</button>
-                             <!-- <button class="col-6" >اضف القوالب المختارة</button>  -->
-                        </div>
-                        <div class="col-6 btn-group cmdConfirm visually-hidden">
-                            <button class="col-6 row btn btn-dark" onclick="Confirm(this)">تأكيد الإختيار</button>
                             <!-- <button class="col-6" >اضف القوالب المختارة</button>  -->
+                        </div>
+                        <div class="col-6  btn-group cmdConfirm visually-hidden">
+                            <button class="col-6 row btn btn-primary cmdOtherSelect" onclick="Confirm(this)">تأكيد مع
+                                خيارات
+                                اخرى</button>
+                            <button class="col-6 row btn btn-dark" onclick="Confirm(this)">تأكيد الإختيار</button>
                         </div>
                         <div class="table-responsive dt_tmp_allSelection">
                             <table id="tmp_allSelection_Element"

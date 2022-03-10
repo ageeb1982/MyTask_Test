@@ -436,7 +436,7 @@ function GetChkBox(data, className) {
     //console.log("data=", data);
     // console.log("row=", row);
     lastrow = data;
-    return `<input class="${className}" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out()">`;
+    return `<input class="${className}" type="checkbox" data-row_id="${data.id}" onclick="setCheckAll_out(this)">`;
 }
 
 function GetPercent_text(data) {
