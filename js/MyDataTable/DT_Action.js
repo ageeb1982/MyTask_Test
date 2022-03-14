@@ -450,7 +450,7 @@ function GetPercent_All_Text(data) {
 function IsOk(data) {
     var imgx = "";
     if (data == 100) {
-        imgx = ' <img src="/img/ok.png">';
+        imgx = ' <img src="./img/ok.png">';
     }
     return imgx;
 }

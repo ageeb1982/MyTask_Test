@@ -2221,8 +2221,8 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
         other_Tree = new $.fn.dataTable.TreeGrid(dt, {
             left: 15,
             expandAll: true,
-            expandIcon: '<img class="tree_button" src="/img/plus.png">',
-            collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+            expandIcon: '<img class="tree_button" src="./img/plus.png">',
+            collapseIcon: '<img class="tree_button" src="./img/minus.png">',
         });
     }
 
@@ -2900,8 +2900,8 @@ function Reload_Tree() {
             tree = new $.fn.dataTable.TreeGrid(dataTable, {
                 left: 15,
                 expandAll: true,
-                expandIcon: '<img class="tree_button" src="/img/plus.png">',
-                collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+                expandIcon: '<img class="tree_button" src="./img/plus.png">',
+                collapseIcon: '<img class="tree_button" src="./img/minus.png">',
             });
         }
 
@@ -2924,7 +2924,7 @@ function Reload_dataTable() {
                 className: "treegrid-control forChild ",
                 data: function (item) {
                     if (item.children != null && item.children.length > 0) {
-                        return '<img class="tree_button" src="/img/plus.png">';
+                        return '<img class="tree_button" src="./img/plus.png">';
                     }
                     return "";
                 },
@@ -3069,8 +3069,8 @@ function Reload_dataTable() {
             tree = new $.fn.dataTable.TreeGrid(dataTable, {
                 left: 15,
                 expandAll: true,
-                expandIcon: '<img class="tree_button" src="/img/plus.png">',
-                collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+                expandIcon: '<img class="tree_button" src="./img/plus.png">',
+                collapseIcon: '<img class="tree_button" src="./img/minus.png">',
             });
         }
 
@@ -3100,7 +3100,7 @@ function ReLoad_tmpAllSelection() {
 
                     data: function (item) {
                         if (item.children != null && item.children.length > 0) {
-                            return '<img class="tree_button" src="/img/plus.png">';
+                            return '<img class="tree_button" src="./img/plus.png">';
                         }
                         return "";
                     },
@@ -3164,8 +3164,8 @@ function ReLoad_tmpAllSelection() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
@@ -3192,7 +3192,7 @@ function ReLoad_tmp_Task_Element() {
 
                     data: function (item) {
                         if (item.children != null && item.children.length > 0) {
-                            return '<img class="tree_button" src="/img/plus.png">';
+                            return '<img class="tree_button" src="./img/plus.png">';
                         }
                         return "";
                     },
@@ -3218,8 +3218,8 @@ function ReLoad_tmp_Task_Element() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
@@ -3247,7 +3247,7 @@ function Reload_tmp_Site_Element() {
 
                 //     data: function (item) {
                 //         if (item.children != null && item.children.length > 0) {
-                //             return '<img class="tree_button" src="/img/plus.png">';
+                //             return '<img class="tree_button" src="./img/plus.png">';
                 //         }
                 //         return "";
                 //     },
@@ -3273,8 +3273,8 @@ function Reload_tmp_Site_Element() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
@@ -3300,7 +3300,7 @@ function ReLoad_tmp_User_Element() {
 
                 //     data: function (item) {
                 //         if (item.children != null && item.children.length > 0) {
-                //             return '<img class="tree_button" src="/img/plus.png">';
+                //             return '<img class="tree_button" src="./img/plus.png">';
                 //         }
                 //         return "";
                 //     },
@@ -3326,8 +3326,8 @@ function ReLoad_tmp_User_Element() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
@@ -3356,7 +3356,7 @@ function ReLoad_tmp_Proj_d_Element() {
 
                 //     data: function (item) {
                 //         if (item.children != null && item.children.length > 0) {
-                //             return '<img class="tree_button" src="/img/plus.png">';
+                //             return '<img class="tree_button" src="./img/plus.png">';
                 //         }
                 //         return "";
                 //     },
@@ -3382,8 +3382,8 @@ function ReLoad_tmp_Proj_d_Element() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
@@ -3412,7 +3412,7 @@ function ReLoad_tmp_part_type_Element() {
 
                 //     data: function (item) {
                 //         if (item.children != null && item.children.length > 0) {
-                //             return '<img class="tree_button" src="/img/plus.png">';
+                //             return '<img class="tree_button" src="./img/plus.png">';
                 //         }
                 //         return "";
                 //     },
@@ -3438,8 +3438,8 @@ function ReLoad_tmp_part_type_Element() {
     //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
     //             left: 15,
     //             expandAll: true,
-    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
-    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //             expandIcon: '<img class="tree_button" src="./img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
     //         });
     //     }
     // }
