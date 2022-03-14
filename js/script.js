@@ -2117,7 +2117,7 @@ var other_Tree;
 //تشغيل الجدول
 function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
     if (!scroollYSize) scroollYSize = "39vh";
-    var DT_Option = {
+     var DT_Option = {
         data: data,
         columns: columns,
         dom: "tr",
@@ -2172,7 +2172,7 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
         //     { extend: 'remove', editor: editor }
         // ]
     };
-
+ 
 
     if (!Isfixed) {
         //scrollY: "50vh",
@@ -2216,6 +2216,7 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
 
 
     var dt = $('#' + dataTableId).DataTable(DT_Option);
+try{
     if (dt) {
 
         other_Tree = new $.fn.dataTable.TreeGrid(dt, {
@@ -2225,7 +2226,7 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
             collapseIcon: '<img class="tree_button" src="./img/minus.png">',
         });
     }
-
+}catch{}
 
 
 
@@ -3065,6 +3066,7 @@ function Reload_dataTable() {
         dataTable.draw();
     }
     if (dataTable) {
+        try{
         if (!tree) {
             tree = new $.fn.dataTable.TreeGrid(dataTable, {
                 left: 15,
@@ -3077,6 +3079,7 @@ function Reload_dataTable() {
         else {
             //  tree.
         }
+    }catch{}
     }
     tr_Event_Click();
 }
