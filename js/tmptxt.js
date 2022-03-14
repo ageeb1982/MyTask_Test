@@ -1,3 +1,27 @@
+
+
+
+
+
+
+class ageeb {
+
+    constructor(a, b) {
+        if (typeof a != "number") { a = 0; }
+        if (typeof b != "number") { b = 0; }
+        this.a = a;
+        this.b = b;
+    }
+
+function multp() { console.log(this.a * this.b); }
+
+
+function plus() {    console.log(this.a + this.b);}
+function div() {   console.log(this.a / this.b);}
+function minus() {    console.log(this.a - this.b);}
+    
+
+}
 /*!
  DataTables 1.10.19
  ©2008-2018 SpryMedia Ltd - datatables.net/license

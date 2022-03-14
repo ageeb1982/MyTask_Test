@@ -24,8 +24,22 @@ function Copy_Object(obj) { return structuredClone(obj); }
 
 //#endregion
 
+//#region Projs
+class Proj {
+    constructor(sn, name, id, children) {
+        this.sn = sn;
+        if (!id) {
+            this.id = GetGuid();
+        } else {
+            this.id = id;
+        }
+        this.name = name;
+        this.children = children;
 
 
+    }
+}
+//#endregion
 //#region  Itemx Class
 class Itemx {
     constructor(id, name) {
@@ -33,6 +47,7 @@ class Itemx {
         this.name = name;
         this.is_select = false;
     }
+
 }
 
 //#endregion
@@ -159,6 +174,9 @@ class Task {
         this.ab = 0;
         // الإجراء
         this.name = name;
+        // نوع التفتييت
+        this.part_type = 0;
+
 
         // "الإدارة",
         this.mang = mang;
@@ -224,6 +242,9 @@ class Task_AllSelection {
         // الإجراء
         this.name = name;
 
+        // نوع التفتييت
+        this.part_type = 0;
+
         // "مدير الإجراء",
         this.mang_name = 0;
 
@@ -247,6 +268,13 @@ class Task_AllSelection {
 //#region  Data Section
 
 //#region Var_Data
+//نوع التفتيت
+var Par_types = [
+    new Itemx(1, "إداري"),
+    new Itemx(2, "تنتظيمي"),
+    new Itemx(3, "إجرائي"),
+    new Itemx(4, "وظيفي")
+];
 
 var techs = [
     new Itemx(1, "توريد"),
@@ -264,6 +292,8 @@ var techs = [
     new Itemx(13, "تحليل أعمال"),
     new Itemx(14, "عملية الشراء"),
 ];
+
+
 var admins = [
     new Itemx(1, "تقديم خطاب بوضع الشركة وقبولها للمنافسة"),
     new Itemx(2, "تجهيز شروط الدخول للمنافسة"),
@@ -394,11 +424,48 @@ var sites = [
     new Itemx(3, "مستودعات التعليم"),
     new Itemx(4, "إدارة التعليم")];
 
-var proj_d = [
-    new Itemx(1, "توريد وتركيب طفايات حريق"),
-    new Itemx(2, "تمديد مواسير المياه"),
-    new Itemx(3, "تكريب اجهزة انذار"),
+var projs = [
+    new Proj(1, "مشروع توريد وتركيب الدفاع المدني - منطقة 1",
+        "467d5b9e-f2e8-4916-b1de-657c890d2df7",
+        [
+            new Itemx(1, "بند 1 - الدفاع المدني"),
+            new Itemx(2, "بند 2 - الدفاع المدني"),
+            new Itemx(3, "بند 3 - الدفاع المدني"),
+        ]),
+    new Proj(2, "تركيب خطوط انابيت ارامكو",
+        "e1b3534b-225b-4a09-9d1a-3fb1d3cacaed",
+        [
+            new Itemx(4, "بند 1 - تركيب خطوط ارامكو"),
+            new Itemx(5, "بند 2 - تركيب خطوط ارامكو"),
+            new Itemx(6, "بند 3 - تركيب خطوط ارامكو"),
+        ]),
+    new Proj(3, "صيانة سباكة مدارس منطقة عسير",
+        "b6c92706-229e-4737-9ba8-f6640890fdf9",
+        [
+            new Itemx(7, "بند 1 - صيانة سباكة مدارس عسير"),
+            new Itemx(8, "بند 2 - صيانة سباكة مدارس عسير"),
+            new Itemx(9, "بند 3 - صيانة سباكة مدارس عسير"),
+        ]),
+    new Proj(4, "تمديد كيبلات شبكات الجيل الخامس",
+        "23f2acb8-2d72-49ae-af26-42988d673cd7",
+        [
+            new Itemx(10, "بند 1 - تمديد كيبلات الجيل الخامس"),
+            new Itemx(11, "بند 2 - تمديد كيبلات الجيل الخامس"),
+            new Itemx(12, "بند 3 - تمديد كيبلات الجيل الخامس"),
+        ]),
+    new Proj(5, "تركيب وتوريد اجهزة الانذار المبكر",
+        "b15ef980-f060-48a7-8e7e-0d88353b361d",
+        [
+            new Itemx(13, "بند 1 - الإنذار المبكر"),
+            new Itemx(14, "بند 2 - الإنذار المبكر"),
+            new Itemx(15, "بند 3 - الإنذار المبكر"),
+        ])
 ];
+
+
+var myproj = projs[0];
+
+var proj_d = myproj.children;
 
 var myuser = [
     new Itemx(1, "عبدالله احمد"),
@@ -797,104 +864,142 @@ var proj_Work = new Task_Tmp("أعمال المشاريع", [
 ]);
 //#endregion
 
-
-
-
-
+var p_tmp;
+var proj_name = document.getElementById("proj_name");
 // #region كل الأعمال
-var All_Temp = [
+var All_Temp = [];
 
-    // اعمال المشاريع
-    Copy_Object(proj_Work),
-    // إعتماد مهندس
-    Copy_Object(Eng_tmp),
-    // عمل منافسة
-    Copy_Object(competition),
-
-    // استلام المشروع 
-    Copy_Object(proj_Recived_tmp),
-
-    // تسليم المشروع النهائي
-    Copy_Object(proj_Finsh),
-
-    // إدارة المشروع
-    Copy_Object(Proj_mang),
-    // أعمال المقاولات
-    Copy_Object(build_Tmp),
-    // الأنشاءات في الدور الأرضي
-    Copy_Object(build_Ground_Flor),
-    // الأنشاءات في الأدوار المتكررة
-    Copy_Object(build_OtherFlor),
-    //تجهيز واعتمادات المخططات
-    Copy_Object(mapsOk),
-
-    //أعمال الصبات
-    Copy_Object(build_Work),
+function Change_Proj_d(id) {
+    if (!id) id = projs[0].id;
+    var proj = projs.find(w => w.id == id);
+    if (!proj) proj = projs[0];
 
 
-    //----------الكهرباء--------------
-    // اعمال الكهرباء
-    Copy_Object(Elect_Work),
-    // تأسيس الكهرباء
-    Copy_Object(Elect_Base),
-    // تشطيب الكهرباء
-    Copy_Object(Elect_Finsh),
+    myproj = proj;
+    proj_d = myproj.children;
+    return proj;
 
-    //----------التكييف--------------
-    // اعمال التكييف
-    Copy_Object(AirCon_Work),
-    // تأسيس التكييف
-    Copy_Object(AirCon_Base),
-    // تشطيب التكييف
-    Copy_Object(AirCon_Finsh),
-    //----------التكييف--------------
-    //----------الكهرباء--------------
+}
+var proj_count = 0;
+function get_All_Temp(id) {
+    Change_Proj_d(id);
+    p_name = myproj.name;
+    if (!p_name) { p_name = "---"; }
+    p_tmp = new Task_Tmp("بنود المشروع - " + p_name, []);
 
-    //----------السباكة--------------
-    // اعمال السباكة
-    Copy_Object(Water_Work),
-    // تأسيس السباكة
-    Copy_Object(Water_Base),
-    // تأسيس السباكة الداخلية
-    Copy_Object(Water_Base_Internal),
-    // تأسيس السباكة الخارجية
-    Copy_Object(Water_Base_External),
-    // تشطيب السباكة
-    Copy_Object(Water_Finsh),
+    // إضافة البنود
+    var p_tmp_child = proj_d.map(w => new Task_Tmp(w.name));
+    p_tmp.children = p_tmp_child;
 
-    //----------السباكة--------------
-    // البلاط
-    Copy_Object(tiles_Work),
 
-    // اعمال الصبات الأرضية
-    Copy_Object(build_Work_Ground),
 
-    // اعمال صبات السقف
-    Copy_Object(build_Work_Roof),
 
-    // الأعمدة
-    Copy_Object(build_Columns),
+    All_Temp = [
+        Copy_Object(p_tmp),
+        // اعمال المشاريع
+        Copy_Object(proj_Work),
+        // إعتماد مهندس
+        Copy_Object(Eng_tmp),
+        // عمل منافسة
+        Copy_Object(competition),
 
-    //اعمال الميدات
-    Copy_Object(medat),
-    // القواعد
-    Copy_Object(build_Base),
+        // استلام المشروع 
+        Copy_Object(proj_Recived_tmp),
 
-    // الخزان والبيارة
-    Copy_Object(water_Ground_Wells),
+        // تسليم المشروع النهائي
+        Copy_Object(proj_Finsh),
 
-    // الخزان الأرضي
-    Copy_Object(water_Ground),
+        // إدارة المشروع
+        Copy_Object(Proj_mang),
+        // أعمال المقاولات
+        Copy_Object(build_Tmp),
+        // الأنشاءات في الدور الأرضي
+        Copy_Object(build_Ground_Flor),
+        // الأنشاءات في الأدوار المتكررة
+        Copy_Object(build_OtherFlor),
+        //تجهيز واعتمادات المخططات
+        Copy_Object(mapsOk),
 
-    // اعمال البيارة
-    Copy_Object(water_wells),
+        //أعمال الصبات
+        Copy_Object(build_Work),
 
-    //اعمال الحفر والردم
-    Copy_Object(digging),
 
-    //رش المياه لمدة يومين
-    Copy_Object(water_TwoDay)
-];
+        //----------الكهرباء--------------
+        // اعمال الكهرباء
+        Copy_Object(Elect_Work),
+        // تأسيس الكهرباء
+        Copy_Object(Elect_Base),
+        // تشطيب الكهرباء
+        Copy_Object(Elect_Finsh),
+
+        //----------التكييف--------------
+        // اعمال التكييف
+        Copy_Object(AirCon_Work),
+        // تأسيس التكييف
+        Copy_Object(AirCon_Base),
+        // تشطيب التكييف
+        Copy_Object(AirCon_Finsh),
+        //----------التكييف--------------
+        //----------الكهرباء--------------
+
+        //----------السباكة--------------
+        // اعمال السباكة
+        Copy_Object(Water_Work),
+        // تأسيس السباكة
+        Copy_Object(Water_Base),
+        // تأسيس السباكة الداخلية
+        Copy_Object(Water_Base_Internal),
+        // تأسيس السباكة الخارجية
+        Copy_Object(Water_Base_External),
+        // تشطيب السباكة
+        Copy_Object(Water_Finsh),
+
+        //----------السباكة--------------
+        // البلاط
+        Copy_Object(tiles_Work),
+
+        // اعمال الصبات الأرضية
+        Copy_Object(build_Work_Ground),
+
+        // اعمال صبات السقف
+        Copy_Object(build_Work_Roof),
+
+        // الأعمدة
+        Copy_Object(build_Columns),
+
+        //اعمال الميدات
+        Copy_Object(medat),
+        // القواعد
+        Copy_Object(build_Base),
+
+        // الخزان والبيارة
+        Copy_Object(water_Ground_Wells),
+
+        // الخزان الأرضي
+        Copy_Object(water_Ground),
+
+        // اعمال البيارة
+        Copy_Object(water_wells),
+
+        //اعمال الحفر والردم
+        Copy_Object(digging),
+
+        //رش المياه لمدة يومين
+        Copy_Object(water_TwoDay)
+    ];
+    ++proj_count;
+    if (proj_count != 1) {
+        ReLoad_tmp_Task_Element();
+        proj_name.value = id;
+    }
+    return All_Temp;
+}
+var oldId = localStorage.getItem("projId");
+
+
+get_All_Temp(oldId);
+
+
 
 // #endregion
 
@@ -910,9 +1015,27 @@ function GetGuid() {
     return crypto.randomUUID();
 }
 
+proj_name.addEventListener('input', Proj_Change);
+function Proj_Change(select) {
+    // console.log(select);
+    // console.log(select.target.value);
+    localStorage.setItem("projId", select.target.value);
+    get_All_Temp(select.target.value);
+}
 
-
-
+function createProjItem() {
+    // var proj_name = document.getElementById("proj_name");
+    var items = "";
+    i = 0;
+    projs.forEach(w => {
+        var sel = "";
+        if (i == 0) { sel = "selected='selected'"; }
+        items += `<option value="${w.id}" ${sel}>${w.name}</option>`;
+        i++;
+    });
+    proj_name.innerHTML = items;
+}
+createProjItem();
 function GetPercent_All(task) {
     if (!task) return 0;
     var sum = 0;
@@ -1036,6 +1159,14 @@ function GetName(id) {
     } catch { }
     return result;
 }
+function Getpart_type(id) {
+    var result = "---";
+    try {
+        var name = Par_types.find(w => w.id == id);
+        if (name) { result = name.name; }
+    } catch { }
+    return result;
+}
 
 function GetMang(id) {
     var result = "---";
@@ -1078,7 +1209,7 @@ function GetUser_Name_From_OneTask(id) {
             console.log("fromOneTask", id);
         }
 
-        var name = myuser.find(w => w.id == id.myuser);
+        var name = myuser.find(w => w.id == id);
         if (name) { result = name.name; }
     } catch { }
     return result;
@@ -1089,7 +1220,14 @@ function GetUsers_Name_From_OneTask(usrs_ids) {
         if (usrs_ids.length != 0) {
             console.log("UserId", usrs_ids);
         }
-        for (const [key, id] of Object.entries(usrs_ids)) {
+
+
+        var z = (Object.entries(usrs_ids).map(w => w[1].myuser));
+
+        var uuu = [...new Set(z)];
+        // for (const [key, id] of Object.entries(usrs_ids)) {
+        console.log("uuu=>", uuu);
+        for (const [key, id] of Object.entries(uuu)) {
             if (result == "---") { result = ""; }
             var u = GetUser_Name_From_OneTask(id);
             if (u) {
@@ -1208,24 +1346,36 @@ function GetProc_Type(id) {
 show_proj_d = "show_proj_d";
 show_site = "show_site";
 show_user = "show_user";
+show_part_type = "show_part_type";
 
-
-function Show_All() {
+function Show_All(WithOther) {
     Select_All("", false);
+    if (typeof WithOther != "boolean") WithOther = false;
     var cmdConfirm = document.querySelector(".cmdConfirm");
+    var cmdOtherSelect = document.querySelector(".cmdOtherSelect");
+    cmdOtherSelect.classList.add("visually-hidden");
+
     var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
     var dt_tmp_site = document.querySelector(".dt_tmp_site");
     var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    //var dt_tmp_part_type = document.querySelector(".dt_tmp_part_type");
+
+    if (WithOther) { cmdOtherSelect.classList.remove("visually-hidden"); }
     cmdConfirm.classList.remove("visually-hidden");
+
+
     dt_tmp_proj_d.classList.remove("visually-hidden");
     dt_tmp_site.classList.remove("visually-hidden");
     dt_tmp_user.classList.remove("visually-hidden");
+    //dt_tmp_part_type.classList.remove("visually-hidden");
 
     //
 
     dt_tmp_proj_d.classList.remove("col-md-12");
     dt_tmp_site.classList.remove("col-md-12");
     dt_tmp_user.classList.remove("col-md-12");
+    //dt_tmp_part_type.classList.remove("col-md-12");
+
     dt_tmp_proj_d.classList.add("col-md-4");
     dt_tmp_site.classList.add("col-md-4");
     dt_tmp_user.classList.add("col-md-4");
@@ -1239,18 +1389,22 @@ function show_hide_One(show_type_Only, IsShow) {
     var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
     var dt_tmp_site = document.querySelector(".dt_tmp_site");
     var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    var dt_tmp_part_type = document.querySelector(".dt_tmp_part_type");
 
     if (IsShow) {
         hide_All();
         if (show_type_Only == show_proj_d) { dt_tmp_proj_d.classList.remove("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-12"); }
         if (show_type_Only == show_site) { dt_tmp_site.classList.remove("visually-hidden"); dt_tmp_site.classList.add("col-md-12"); }
         if (show_type_Only == show_user) { dt_tmp_user.classList.remove("visually-hidden"); dt_tmp_user.classList.add("col-md-12"); }
+        if (show_type_Only == show_part_type) { dt_tmp_part_type.classList.remove("visually-hidden"); dt_tmp_part_type.classList.add("col-md-12"); }
+
     }
     else {
         Show_All();
         if (show_type_Only == show_proj_d) { dt_tmp_proj_d.classList.add("visually-hidden"); dt_tmp_site.classList.add("col-md-6"); dt_tmp_user.classList.add("col-md-6"); }
         if (show_type_Only == show_site) { dt_tmp_site.classList.add("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-6"); dt_tmp_user.classList.add("col-md-6"); }
         if (show_type_Only == show_user) { dt_tmp_user.classList.add("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-6"); dt_tmp_site.classList.add("col-md-6"); }
+        if (show_type_Only == show_part_type) { dt_tmp_part_type.classList.add("visually-hidden"); dt_tmp_proj_d.classList.add("col-md-6"); dt_tmp_site.classList.add("col-md-6"); }
 
     }
     cmdConfirm.classList.remove("visually-hidden");
@@ -1261,22 +1415,35 @@ function show_hide_One(show_type_Only, IsShow) {
 function hide_All(e) {
     Select_All("", false);
     //console.log(e);
-    if (e) { if (e.dataset.cmd_Name != "cmdConfirm") return; }
+    if (e) { if (e.dataset.cmd_name == "cmdOtherSelect") return; }
     var cmdConfirm = document.querySelector(".cmdConfirm");
+
+    var cmdOtherSelect = document.querySelector(".cmdOtherSelect");
+
+
     cmdConfirm.classList.add("visually-hidden");
+    cmdOtherSelect.classList.add("visually-hidden");
+
     var dt_tmp_proj_d = document.querySelector(".dt_tmp_proj_d");
     var dt_tmp_site = document.querySelector(".dt_tmp_site");
     var dt_tmp_user = document.querySelector(".dt_tmp_user");
+    var dt_tmp_part_type = document.querySelector(".dt_tmp_part_type");
+
     dt_tmp_proj_d.classList.add("visually-hidden");
     dt_tmp_site.classList.add("visually-hidden");
     dt_tmp_user.classList.add("visually-hidden");
+    dt_tmp_part_type.classList.add("visually-hidden");
 
     dt_tmp_proj_d.classList.remove("col-md-12");
     dt_tmp_site.classList.remove("col-md-12");
     dt_tmp_user.classList.remove("col-md-12");
+    dt_tmp_part_type.classList.remove("col-md-12");
+
     dt_tmp_proj_d.classList.remove("col-md-4");
     dt_tmp_site.classList.remove("col-md-4");
     dt_tmp_user.classList.remove("col-md-4");
+    // dt_tmp_user.classList.remove("col-md-4");
+
 }
 
 // تغيير مدير الإجراء
@@ -1296,6 +1463,30 @@ function Confirm_changeManager(e) {
     hide_All(e);
     ReLoad_tmpAllSelection();
 }
+
+// نوع التفتييت
+function Confirm_change_part_type(e) {
+
+    if (oper_type == oper_change_part_type) {
+        var myPar_type_Select = document.querySelectorAll('.tmp_par_type:checked');
+        if (myPar_type_Select.length == 0) { msgbox_tmp("لم تقم بالإختيار ، من فضلك أختر نوع التفتيت", "خطأ لا يمكن اتمام العملية"); return; }
+        if (myPar_type_Select.length > 1) { msgbox_tmp("لا بد من اختيار نوع تفتيت واحد فقط", "خطأ لا يمكن اتمام العملية"); return; }
+        var part_type_id = myPar_type_Select[0].dataset.row_id;
+        // if (oper_Id && myUser_id) {
+        // var part_type = document.querySelector(".part_type").value;
+        if (oper_Id) {
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                current.part_type = part_type_id;
+            }
+        }
+    }
+    hide_All(e);
+    ReLoad_tmpAllSelection();
+}
+
+
+
 
 // تغيير مدير الموقع
 function Confirm_changeSiteManger(e) {
@@ -1478,6 +1669,8 @@ function Confirm(e) {
     else if (oper_type == oper_changeSiteManger) { Confirm_changeSiteManger(e); }
     //المسولون بالتنفيذ
     else if (oper_type == oper_changeSiteEmps) { Confirm_changeSiteEmps(e); }
+    else if (oper_type == oper_change_part_type) { Confirm_change_part_type(e); }
+
 
 
 }
@@ -1485,6 +1678,7 @@ var select_myUser = "select_myUser";
 var select_proj_d = "select_proj_d";
 var select_Task = "select_Task";
 var select_site = "select_site";
+var select_part_type = "select_part_type";
 
 function Select_All(Exception_Table, IsSelect) {
     if (typeof isSelect != "boolean") { IsSelect = true; }
@@ -1496,6 +1690,10 @@ function Select_All(Exception_Table, IsSelect) {
 
     // زر اختيار كل القوالب أو الإلغاء
     checkAll_tmp_User(oe);
+
+
+    // زر اختيار كل القوالب أو الإلغاء
+    checkAll_tmp_part_type(oe);
 
     // زر إختيار كل البنود أو الإلغاء
     checkAll_tmp_Proj_d(oe);
@@ -1527,8 +1725,9 @@ function Select_All(Exception_Table, IsSelect) {
     // زر إختيار المواقع أو الإلغاء
     if (Exception_Table == select_site) { checkAll_tmp_Location(o2); }// checkAll_tmp_Locationqq.checked=!IsSelect; }
 
+    // زر إختيار المواقع أو الإلغاء
+    if (Exception_Table == select_part_type) { checkAll_tmp_part_type(o2); }// checkAll_tmp_Locationqq.checked=!IsSelect; }
 }
-
 //تغيير المدير
 function changeManger(e) {
     oper_type = oper_changeManger;
@@ -1597,7 +1796,7 @@ function change_site_mang(e) {
 function change_emps_mang(e) {
     oper_type = oper_emps_mang;
     oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
-    Show_All();
+    Show_All(true);
 
 
     //إحضار البيانات
@@ -1620,11 +1819,40 @@ function change_emps_mang(e) {
 }
 
 
+// تغيير التفتييت
+function change_part_type(e) {
+    oper_type = oper_change_part_type;
+    oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
+    //Show_All();
+    //hide_All();
+
+    show_hide_One(show_part_type, true);
+
+
+    //إحضار البيانات
+    if (oper_Id) {
+        try {
+
+            var current = Mydb_AllSelection_tmp.find(w => w.id == oper_Id);
+            if (current) {
+                // if (current.site_mang) {
+                //     loadSite_mang(current.site_mang);
+                // }
+            }
+        } catch (z) { console.log("err=>", z); }
+    }
+    ReLoad_tmp_part_type_Element();
+
+
+}
+
+
+
 // المسؤولون بالتنفيذ
 function change_site_emps(e) {
     oper_type = oper_changeSiteEmps;
     oper_Id = e.parentElement.parentElement.querySelectorAll('[data-row_id]')[0].dataset.row_id;
-    Show_All();
+    Show_All(true);
 
 
     //إحضار البيانات
@@ -1664,11 +1892,22 @@ var table_proj_d = "proj_d";
 
 
 function expandAll() {
-    tree.expandAll();
+    try {
+        tree.expandAll();
+    } catch {
+        ReLoad_tree();
+        tree.expandAll();
+    }
+
 }
 
 function collapseAll() {
-    tree.collapseAll();
+    try {
+        tree.collapseAll();
+    } catch {
+        ReLoad_tree();
+        tree.collapseAll();
+    }
 }
 
 
@@ -1683,6 +1922,9 @@ var oper_changeManger = "changeManger";
 var oper_changeSiteManger = "changeSiteManger";
 var oper_changeSiteEmps = "oper_changeSiteEmps";
 var oper_emps_mang = "emps_mang";
+var oper_change_part_type = "changepart_type";
+
+
 var oper_Id = "";
 
 
@@ -1871,6 +2113,7 @@ function cmdMyUser(oe) {
     showModel(table_User, myId, entry);
 }
 var tree;
+var other_Tree;
 //تشغيل الجدول
 function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
     if (!scroollYSize) scroollYSize = "39vh";
@@ -1880,6 +2123,8 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
         dom: "tr",
         //dom: 'l<"H"Rf>t<"F"ip>',
         ordering: false,
+        retrieve: true,
+
         rowReorder: false,
         colReorder: false,//تحريك الأعمدة
         "jQueryUI": true,
@@ -1973,22 +2218,28 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
     var dt = $('#' + dataTableId).DataTable(DT_Option);
     if (dt) {
 
-        tree = new $.fn.dataTable.TreeGrid(dt, {
+        other_Tree = new $.fn.dataTable.TreeGrid(dt, {
             left: 15,
             expandAll: true,
             expandIcon: '<img class="tree_button" src="/img/plus.png">',
             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
         });
     }
-    // dt.on('click', 'tr', function (e) {
-    //     try {
-    //         console.log(e.target.parentNode);
-    //         var eel = e.target.parentNode.querySelector('[type="checkbox"]');
 
-    //         console.log(eel);
-    //         eel.checked = !eel.checked;
-    //     } catch { }
-    // });
+
+
+
+
+
+    dt.on('click', 'tr', function (e) {
+        try {
+            // console.log(e.target.parentNode);
+            var eel = e.target.parentNode.querySelector('[type="checkbox"]');
+
+            // console.log(eel);
+            eel.checked = !eel.checked;
+        } catch { }
+    });
 
     tr_Event_Click();
     return dt;
@@ -2037,7 +2288,13 @@ function check_tmp_All_Task(oe) {
     }
     );
 }
-
+// زر نوع التفتيت
+function checkAll_tmp_part_type(oe) {
+    document.querySelectorAll('.dt_tmp_part_type').forEach(el => {
+        el.checked = oe.checked;
+        //  checkChange(el);
+    });
+}
 // زر إختيار كل البنود أو الإلغاء
 function checkAll_tmp_Proj_d(oe) {
     document.querySelectorAll('.tmp_proj_d').forEach(el => {
@@ -2072,6 +2329,7 @@ var tmpAllSelection;
 var tmpUser;
 var tmpProj_d;
 var tmpSite;
+var tmpPart_type;
 var cmdSavetmp;
 
 
@@ -2421,6 +2679,7 @@ function setCheckAll_out(e) {
         if (classname == "tmp_site") { allz = "checkAll_tmp_Location"; }
         if (classname == "tmp_proj_d") { allz = "checkAll_tmp_Proj_d"; }
         if (classname == "tmp_task") { allz = "check_tmp_All_Task"; }
+        if (classname == "tmp_part_type") { allz = "checkAll_tmp_part_type"; }
 
         document.querySelector(`input.${allz}`).checked =
             document.querySelectorAll(`.${classname}`).length ==
@@ -2575,6 +2834,9 @@ function cmdSavetmp_Click(e) {
         Mydb_AllSelection_tmp.forEach(w => {
 
             // console.log("w=>", w);
+            w.id;
+
+
 
             var id = w.id;
             // console.log("id=", id);
@@ -2582,15 +2844,28 @@ function cmdSavetmp_Click(e) {
             // console.log("name=", name);
             var childs = w.children;
             // console.log("childs=", childs);
-            var www = new Task(id, name, 0, 0, 0, 0, 0, 0, "", Copy_Object(childs));
-            // console.log("www=", www);
-            // console.log("Mydb_AllSelection_tmp--1=", Mydb_Table);
-            www.emps_mang = Copy_Object(w.emps_mang);
-            www.site_emps = Copy_Object(w.site_emps);
-            www.site_mang = Copy_Object(w.site_mang);
-            www.mang_name = Copy_Object(w.mang_name);
+            //ToDO: تعديل البيانات الموجودة عن طريق الأمر الحالي
+            var item = Mydb_Table.find(x => x.id == w.id);
+            if (item) {
+                item.name = name;
+                item.emps_mang = Copy_Object(w.emps_mang);
+                item.site_emps = Copy_Object(w.site_emps);
+                item.site_mang = Copy_Object(w.site_mang);
+                item.mang_name = Copy_Object(w.mang_name);
+                item.part_type = Copy_Object(w.part_type);
+                item.children = childs;
+            } else {
 
 
+                var www = new Task(id, name, 0, 0, 0, 0, 0, 0, "", Copy_Object(childs));
+                // console.log("www=", www);
+                // console.log("Mydb_AllSelection_tmp--1=", Mydb_Table);
+                www.emps_mang = Copy_Object(w.emps_mang);
+                www.site_emps = Copy_Object(w.site_emps);
+                www.site_mang = Copy_Object(w.site_mang);
+                www.mang_name = Copy_Object(w.mang_name);
+                www.part_type = Copy_Object(w.part_type);
+            }
             Mydb_Table.push(www);
 
             // console.log("Mydb_AllSelection_tmp--2=", Mydb_Table);
@@ -2619,7 +2894,23 @@ function cmdSavetmp_Click(e) {
 function RemoveAll_Tmp_Select() {
     Mydb_AllSelection_tmp = [];
 }
+function Reload_Tree() {
+    if (dataTable) {
+        if (!tree) {
+            tree = new $.fn.dataTable.TreeGrid(dataTable, {
+                left: 15,
+                expandAll: true,
+                expandIcon: '<img class="tree_button" src="/img/plus.png">',
+                collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+            });
+        }
 
+        else {
+            //  tree.
+        }
+    }
+    tr_Event_Click();
+}
 function Reload_dataTable() {
     if (!dataTable) {
         dataTable = Open_Datatable("MyTable", Mydb_Table, true, "65vh", [
@@ -2650,6 +2941,13 @@ function Reload_dataTable() {
                 // render: function (data, type, row) {
                 //     return GetName(data);
                 // },
+            },
+            {
+                // نوع التفتيت
+                data: "part_type",
+                render: function (data, type, row) {
+                    return Getpart_type(data);
+                },
             },
             {
                 // الإدارة
@@ -2775,6 +3073,10 @@ function Reload_dataTable() {
                 collapseIcon: '<img class="tree_button" src="/img/minus.png">',
             });
         }
+
+        else {
+            //  tree.
+        }
     }
     tr_Event_Click();
 }
@@ -2810,6 +3112,13 @@ function ReLoad_tmpAllSelection() {
                     // الإجراءات
                     data: "name",
 
+                },
+                {
+                    // نوع التفتيت
+                    data: "part_type",
+                    render: function (data, type, row) {
+                        return `<button onclick="change_part_type(this)">***</button> ` + Getpart_type(data);
+                    },
                 },
                 {
                     // مدير الإجراء
@@ -2972,6 +3281,7 @@ function Reload_tmp_Site_Element() {
     tr_Event_Click();
     return tmpSite;
 }
+
 function ReLoad_tmp_User_Element() {
     if (!tmpUser) {
         tmpUser = Open_Datatable("tmp_User_Element", myuser, false, "39vh",
@@ -3083,23 +3393,82 @@ function ReLoad_tmp_Proj_d_Element() {
 
 
 
+function ReLoad_tmp_part_type_Element() {
+
+    if (!tmpPart_type) {
+        tmpPart_type = Open_Datatable("tmp_part_type_Element", Par_types, false, "39vh",
+            [
+                {
+                    // ازرار الإختيار
+                    className: "forChild",
+                    // width: "20%",
+
+                    data: function (data, type, row) { return GetChkBox(data, "tmp_par_type"); },
+                },
+                // {
+                //     // زر الشجرة
+                //     className: "treegrid-control forChild ",
+                //     // width: "20%",
+
+                //     data: function (item) {
+                //         if (item.children != null && item.children.length > 0) {
+                //             return '<img class="tree_button" src="/img/plus.png">';
+                //         }
+                //         return "";
+                //     },
+                // },
+                // { "data": "ab" },
+
+                {
+                    // width: "60vw",
+                    // الإجراءات
+                    data: "name",
+
+                }
+            ]);
+    }
+    else {
+        tmpPart_type.clear();
+        tmpPart_type.rows.add(Par_types);
+        tmpPart_type.draw();
+    }
+    // if (tmpAllSelection) {
+    //     if (!tmpTree) {
+    //         console.log("tmptree");
+    //         tmpTree = new $.fn.dataTable.TreeGrid(tmpAllSelection, {
+    //             left: 15,
+    //             expandAll: true,
+    //             expandIcon: '<img class="tree_button" src="/img/plus.png">',
+    //             collapseIcon: '<img class="tree_button" src="/img/minus.png">',
+    //         });
+    //     }
+    // }
+    tr_Event_Click();
+    return tmpPart_type;
+}
+
 
 var tmpTree;
 //لعرض شاشة الإضافة
 function showAdd_Tmp() {
     // زر الحفظ
     cmdSavetmp = document.getElementById("cmdSavetmp");
+
     ReLoad_tmp_Task_Element();
     ReLoad_tmpAllSelection();
     Reload_tmp_Site_Element();
     ReLoad_tmp_User_Element();
     ReLoad_tmp_Proj_d_Element();
+
     // شاشة العرض
     screen = document.getElementById("MyTmpAction");
     MyModal = new bootstrap.Modal(screen);
 
     MyModal.show();
-
+    var oldId = localStorage.getItem("projId");
+    if (oldId) {
+        proj_name.value = oldId;
+    }
 }
 
 //#endregion  حفظ البيانات-----------------------------------------------------------

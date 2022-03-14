@@ -87,7 +87,10 @@ direction: rtl !important; */
     overflow: auto;
 
 }
+.dt_tmp_part_type {
+    overflow: auto;
 
+}
 .dt_tmp_site {
     overflow: auto;
 
