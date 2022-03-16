@@ -12,11 +12,13 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"> -->
     <!-- <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script> -->
-    <script src="./js/jquery.min.js"></script>
+    <!-- <script src="./js/jquery.min.js"></script> -->
+    <script src="./js/jquery-3.5.1.js"></script>
+
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"> -->
     <link rel="stylesheet" href="./css/jquery.dataTables.min.css">
     <!-- <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
-    <script src="./js/MyDataTable/jquery.dataTables.min.js"></script>
+    <script src="./js/MyDataTable/jquery.dataTables.min-1.11.5.js"></script>
     <link rel="stylesheet" href="./css/style.css">
     <script defer src="./js/jsuites.js"></script>
     <link rel="stylesheet" href="./css/jsuites.css" type="text/css" />
@@ -64,6 +66,43 @@
 
                 </tr>
                 <tr>
+                    <th class="colX1"></th>
+                    <th class="colX1"></th>
+                    <!-- <th>الأب</th> -->
+                    <th class="colX1"><input id="s2" class="txt_srch" type="text" placeholder="البحث بالتسلسلي" /></th>
+                    <th class="colX1"><input id="s3" class="txt_srch" type="text" placeholder="البحث بالإجراءات" /></th>
+                    <th class="colX1"><input id="s4" class="txt_srch" type="text" placeholder="البحث بنوع التفتيت" />
+                    </th>
+                    <th class="colX2"><input id="s5" class="txt_srch" type="text" placeholder="البحث بالإدارة" /></th>
+                    <th class="colX2"><input id="s6" class="txt_srch" type="text" placeholder="البحث بمدير الإجراء" />
+                    </th>
+                    <th class="colX2"><input id="s7" class="txt_srch" type="text"
+                            placeholder="البحث بالموظفين الإداريين" />
+                    </th>
+                    <th class="colX3"><input id="s8" class="txt_srch" type="text" placeholder="البحث بالبنود" /></th>
+                    <th class="colX3"><input id="s9" class="txt_srch" type="text" placeholder="البحث باللمواقع" /></th>
+                    <th class="colX3"><input id="s10" class="txt_srch" type="text" placeholder="البحث بمدير الموقع" />
+                    </th>
+                    <th class="colX3"><input id="s11" class="txt_srch" type="text"
+                            placeholder="البحث المسؤولون بالتنفيذ" /></th>
+                    <th class="colX3"><input id="s12" class="txt_srch" type="text" placeholder="المهام الفنيةالبحث" />
+                    </th>
+                    <th class="colX3"><input id="s13" class="txt_srch" type="text" placeholder="البحث بطبيعة العمل" />
+                    </th>
+                    <th class="colX3"><input id="s14" class="txt_srch" type="text" placeholder="البحث بوصف العمل" />
+                    </th>
+                    <th class="colX4"><input id="s15" class="txt_srch" type="text" placeholder="البحث بالمدة" /></th>
+                    <th class="colX4"><input id="s16" class="txt_srch" type="text"
+                            placeholder="البحث بالبدايةوالنهاية" /></th>
+                    <th class="colX4"><input id="s17" class="txt_srch" type="text" placeholder="البحث بنوع الإجراء" />
+                    </th>
+                    <th class="colX4"><input id="s18" class="txt_srch" type="text" placeholder="البحث بنسبة الإنجاز" />
+                    </th>
+                    <th class="colX4"><input id="s19" class="txt_srch" type="text" placeholder="البحث بالنسبة للجميع" />
+                    </th>
+                    <th class="colX4"> </th>
+                </tr>
+                <tr>
                     <th class="colX1"><input class="checkAll_out" type="checkbox" onclick="checkAll_out(this)"></th>
                     <th class="colX1"></th>
                     <!-- <th>الأب</th> -->
@@ -98,6 +137,9 @@
             </thead>
             <tbody class="DT_Body">
             </tbody>
+            <tfoot>
+
+            </tfoot>
         </table>
     </div>
     <div>

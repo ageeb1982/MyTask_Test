@@ -2112,12 +2112,19 @@ function cmdMyUser(oe) {
 
     showModel(table_User, myId, entry);
 }
+
+
+
+
+
+
 var tree;
 var other_Tree;
 //تشغيل الجدول
 function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
     if (!scroollYSize) scroollYSize = "39vh";
-     var DT_Option = {
+
+    var DT_Option = {
         data: data,
         columns: columns,
         dom: "tr",
@@ -2171,8 +2178,26 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
         //     { extend: 'edit', editor: editor },
         //     { extend: 'remove', editor: editor }
         // ]
+
+
+        // initComplete: function () {
+        //     // Apply the search
+        //     this.api().columns().every(function () {
+        //         var that = this;
+
+        //         $('.txt_srch').on('keyup change clear', function () {
+        //             console.log("srch", that.search());
+        //             console.log("this.value", this.value);
+        //             if (that.search() !== this.value) {
+        //                 that
+        //                     .search(this.value)
+        //                     .draw();
+        //             }
+        //         });
+        //     });
+        // },
+
     };
- 
 
     if (!Isfixed) {
         //scrollY: "50vh",
@@ -2216,17 +2241,17 @@ function Open_Datatable(dataTableId, data, Isfixed, scroollYSize, columns) {
 
 
     var dt = $('#' + dataTableId).DataTable(DT_Option);
-try{
-    if (dt) {
+    try {
+        if (dt) {
 
-        other_Tree = new $.fn.dataTable.TreeGrid(dt, {
-            left: 15,
-            expandAll: true,
-            expandIcon: '<img class="tree_button" src="./img/plus.png">',
-            collapseIcon: '<img class="tree_button" src="./img/minus.png">',
-        });
-    }
-}catch{}
+            other_Tree = new $.fn.dataTable.TreeGrid(dt, {
+                left: 15,
+                expandAll: true,
+                expandIcon: '<img class="tree_button" src="./img/plus.png">',
+                collapseIcon: '<img class="tree_button" src="./img/minus.png">',
+            });
+        }
+    } catch { }
 
 
 
@@ -2892,6 +2917,19 @@ function cmdSavetmp_Click(e) {
     MyModal.hide();
 }
 
+function search_dataTable(oe) {
+    try {
+        console.log("srch_datatble", oe);
+        //dataTable.search(oe.value).draw();
+        var s = oe.target.id;
+        s = s.replace("s", "");
+
+        dataTable.column(s).search(oe.target.value);
+        dataTable.draw();
+        // dataTable.column(3).search(oe.value).column(2).search('london').draw();
+    } catch { }
+
+}
 function RemoveAll_Tmp_Select() {
     Mydb_AllSelection_tmp = [];
 }
@@ -3057,6 +3095,12 @@ function Reload_dataTable() {
                 },
             },
         ]);
+        var myinputs = document.querySelectorAll(".txt_srch");
+        myinputs.forEach(w => {
+            w.addEventListener("keyup", search_dataTable);
+            w.addEventListener("change", search_dataTable);
+            w.addEventListener("input", search_dataTable);
+        });
     }
     else {
 
@@ -3066,22 +3110,28 @@ function Reload_dataTable() {
         dataTable.draw();
     }
     if (dataTable) {
-        try{
-        if (!tree) {
-            tree = new $.fn.dataTable.TreeGrid(dataTable, {
-                left: 15,
-                expandAll: true,
-                expandIcon: '<img class="tree_button" src="./img/plus.png">',
-                collapseIcon: '<img class="tree_button" src="./img/minus.png">',
-            });
-        }
+        try {
+            if (!tree) {
+                tree = new $.fn.dataTable.TreeGrid(dataTable, {
+                    left: 15,
+                    expandAll: true,
+                    expandIcon: '<img class="tree_button" src="./img/plus.png">',
+                    collapseIcon: '<img class="tree_button" src="./img/minus.png">',
+                });
+            }
 
-        else {
-            //  tree.
-        }
-    }catch{}
+            else {
+                //  tree.
+            }
+        } catch { }
     }
+
     tr_Event_Click();
+
+
+
+
+
 }
 
 // تحميل البيانات المؤقته

@@ -87,10 +87,12 @@ direction: rtl !important; */
     overflow: auto;
 
 }
+
 .dt_tmp_part_type {
     overflow: auto;
 
 }
+
 .dt_tmp_site {
     overflow: auto;
 
@@ -109,4 +111,8 @@ direction: rtl !important; */
     font-size: 1.2rem !important;
 }
 
- 
+.txt_srch {
+    width: 70px !important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
